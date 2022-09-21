@@ -7,6 +7,11 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 
+
+User.destroy_all
+Post.destroy_all
+# Comic.destroy_all
+
 puts "creating seeds"
 
 5.times do User.create(
@@ -24,14 +29,16 @@ end
 )
 end
 
-5.times do Comic.create(
-    title: Faker::Book.title,
-    characters: Faker::DcComics.hero,
-    images: Faker::Avatar.image,
-    thumbnail: Faker::Avatar.image,
-    creators: Faker::DcComics.name 
-)
-end
+
+
+# 5.times do Comic.create(
+#     title: Faker::Book.title,
+#     characters: Faker::DcComics.hero,
+#     images: Faker::Avatar.image,
+#     thumbnail: Faker::Avatar.image,
+#     creators: Faker::DcComics.name 
+# )
+# end
 
 
 puts "done"
