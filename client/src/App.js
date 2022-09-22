@@ -8,31 +8,45 @@ import NavBar from './components/NavBar';
 import ComicPage from './components/ComicPage';
 
 function App() {
-const [data, SetData] = useState([]);
+	const [comicData, SetComicData] = useState([]);
+	const [currentUser, setCurrentUser] = useState([]);
+	const [errors, setErrors] = useState([])
 
-  useEffect(() => {
-		// let baseUrl = `${API_URL}/v1/public/comics`;
-		// let ts = Date.now().toString();
-		// let hash = getHash(ts, privateKey, apiKey);
-
+	// fetch comic data
+	useEffect(() => {
 		fetch(`/comics`)
 			.then((res) => res.json())
-			.then((data) => SetData(data));
-  }, []);
+			.then((data) => SetComicData(data));
+	}, []);
 
+	useEffect(() => {
+		fetch("/me").then((res) => {
+			if (res.ok) {
+				res.json().then((user) => {
+					setCurrentUser(user);
+				});
+			}else {res.json().then((json) => setErrors(json.errors))}
+		});
+	}, []);
+
+		console.log(errors)
+		console.log(currentUser)
+
+	
 
   return (
 		<div className='App'>
+			<>welcome {currentUser.username}</>
 			<NavBar />
 			<Switch>
 				<Route exact path='/'>
-					<Home data={data} />
+					<Home comicData={comicData} />
 				</Route>
 				<Route path='/signup'>
-					<Signup />
+					<Signup setCurrentUser={setCurrentUser} />
 				</Route>
 				<Route path='/login'>
-					<Login />
+					<Login setCurrentUser={setCurrentUser} />
 				</Route>
 				<Route path='/comic-page'>
 					<ComicPage />

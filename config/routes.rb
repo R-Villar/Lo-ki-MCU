@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   resources :comics
   resources :users
 
-  get "test", to: "test#test"
+  post "/login", to: "sessions#create" 
+  delete "/logout", to: "sessions#destroy"
+  # get "/toys/:id", to: "session#show"
+  get "/me", to: "users#show"
+  # delete '/logout', to: "sessions#destroy"
   
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!

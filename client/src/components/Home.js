@@ -1,12 +1,11 @@
 
 const image_size = "portrait_fantastic";
 
-export default function Home({data}) {
+export default function Home({comicData}) {
+	// console.log(comicData);
 
-    console.log(data);
-
-    const displayComics = data.map((comic) => {
-        return (
+	const displayComics = comicData.map((comic) => {
+		return (
 			<div key={comic.id}>
 				<h4>{comic.title}</h4>
 				<img
@@ -17,11 +16,7 @@ export default function Home({data}) {
 				<p>{comic.issueNumber}</p>
 			</div>
 		);
-    })
+	});
 
-    return (
-        <div>
-            {displayComics}
-        </div>
-    )
+	return <div>{displayComics}</div>;
 }
