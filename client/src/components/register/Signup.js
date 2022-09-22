@@ -9,33 +9,45 @@ import IconButton from "@mui/material/IconButton";
 
 
 
-export default function Signup() {
-
-    
-    const [formData, setFormData] = useState({});
-
-    const handleChange = (e) => {
-		setFormData(formData => ({...formData, [e.target.name]: e.target.value}))
+export default function Signup({setCurrentUser}) {
+	const [userFormData, setUserFormData] = useState({});
+	const [errors, setErrors] = useState([]);
+	// form data from user input 
+	const handleChange = (e) => {
+		setUserFormData((formData) => ({
+			...formData,
+			[e.target.name]: e.target.value,
+		}));
 	};
 
-    const handleAvatarChange = (e) => {
-        setFormData(formData => ({...formData, 'avatar': e.target.files[0]}));
-    }
+	// console.log(setCurrentUser)
 
-    const onSubmit = (e) => {
-        e.preventDefault()
+	// adding avatars to users later on
+	// const handleAvatarChange = (e) => {
+	//     setFormData(formData => ({...formData, 'avatar': e.target.files[0]}));
+	// }
 
-        fetch("/users", {
+	const onSubmit = (e) => {
+		e.preventDefault();
+
+		fetch("/users", {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify(formData),
+			body: JSON.stringify(userFormData),
 		})
-        .then(res => res.json())
-        console.log(formData)
-    }
+		.then( res => {
+			if(res.ok){
+				res.json().then(user => {
+					setCurrentUser(user);
+				})
+			}else {
+				res.json().then((json) => setErrors(json.errors))
+			}
+		})
+	};
 
-
-    console.log(formData);
+	console.log(userFormData);
+	console.log(errors);
 	return (
 		<Box
 			// container
@@ -106,7 +118,8 @@ export default function Signup() {
 						>
 							Sign Up
 						</Button>
-						<Button variant='contained' component='label'>
+						{/* uploading avatar for users */}
+						{/* <Button variant='contained' component='label'>
 							Upload
 							<input
 								onChange={handleAvatarChange}
@@ -115,7 +128,7 @@ export default function Signup() {
 								accept='image/*'
 								type='file'
 							/>
-						</Button>
+						</Button> */}
 					</Stack>
 				</Stack>
 			</Paper>
