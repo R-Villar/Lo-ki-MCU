@@ -1,6 +1,11 @@
 import './App.css';
 import { useEffect, useState } from 'react'
+import {Route, Switch} from "react-router-dom";
 import Home from './components/Home';
+import Signup from './components/register/Signup';
+import Login from './components/register/Login';
+import NavBar from './components/NavBar';
+import ComicPage from './components/ComicPage';
 
 function App() {
 const [data, SetData] = useState([]);
@@ -17,10 +22,23 @@ const [data, SetData] = useState([]);
 
 
   return (
-    <div className="App">
-      <Home data={data} />
-
-    </div>
+		<div className='App'>
+			<NavBar />
+			<Switch>
+				<Route exact path='/'>
+					<Home data={data} />
+				</Route>
+				<Route path='/signup'>
+					<Signup />
+				</Route>
+				<Route path='/login'>
+					<Login />
+				</Route>
+				<Route path='/comic-page'>
+					<ComicPage />
+				</Route>
+			</Switch>
+		</div>
   );
 }
 

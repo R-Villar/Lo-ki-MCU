@@ -14,12 +14,12 @@ Post.destroy_all
 
 puts "creating seeds"
 
-5.times do User.create(
-    avatar: Faker::Avatar.image,
-    username: Faker::Name.unique.name,
-    email: Faker::Internet.email,
-    password: '12345')
-end
+# 5.times do User.create(
+#     avatar: 'cat.jpeg',
+#     username: Faker::Name.unique.name,
+#     email: Faker::Internet.email,
+#     password: '12345')
+# end
 
 5.times do Post.create(
     comment: Faker::Lorem.sentence,

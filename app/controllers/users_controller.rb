@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
      #GET '/users/:id'
     def show 
-        render json: find_user, status: :ok, serializer: UserPostsSerializer
+        render json: find_user, status: :ok, serializer: UserPostsSerializer, include: [:avatar_url]
     end
 
     #POST '/users'
@@ -23,6 +23,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.permit(:avatar, :username, :email, :password)
+        params.permit(:username, :email, :password, :avatar)
     end
 end
