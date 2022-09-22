@@ -6,7 +6,7 @@ class ComicsController < ApplicationController
     #     render json: Comic.all, status: :ok
     # end
 
-    def index 
+    def index
         ts = DateTime.now.strftime('%Q')
         baseUrl = 'https://gateway.marvel.com/v1/public/comics'
         apiPublicKey = ENV['MARVEL_PUBLIC_API_KEY']
@@ -20,8 +20,6 @@ class ComicsController < ApplicationController
         json = JSON.parse(r.body)
         render json:  json['data']['results']
     end
-
-
 
 
     def show
