@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import {useParams} from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -20,12 +20,9 @@ import {Link} from "react-router-dom";
 
 const image_size = "portrait_uncanny";
 export default function ComicPage({setComic, currentUser}) {
-
+    // console.log(setComic)
     // comment form
-    const [formData, setFormData] = useState({
-        user_id: currentUser.id,
-        comic_id: setComic.id 
-    });
+    const [formData, setFormData] = useState({});
     // disable send comment if user is not logged in 
     const [ disableCommentButton, setDisableCommentButton ] = useState(!currentUser)
 
@@ -37,17 +34,35 @@ export default function ComicPage({setComic, currentUser}) {
     }
 
 
+    const comicData = {
+		title: setComic.title,
+		thumbnail: `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
+		format: setComic.format,
+		pageCount: setComic.pageCount
+	};
+
+    console.log(comicData)
+
     const newComment = (e) => {
         e.preventDefault()
 
         const infoToSend = {
-            ...formData,
-            ...setComic
-        }
-        console.log(infoToSend);
+			...formData,
+			...comicData,
+		};
+
+
+        fetch("/posts", {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify( infoToSend ),
+		})
+        .then(res => res.json())
+        .then(console.log)
+        // console.log(infoToSend);
     }
-	console.log(formData);
-    console.log(setComic);
+	// console.log(formData);
+    // console.log(setComic);
 	return (
 		<div>
 			<Box

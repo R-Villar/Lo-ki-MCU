@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-    
+    skip_before_action :authenticate_user
     
     #GET '/posts'
     def index
@@ -13,7 +13,15 @@ class PostsController < ApplicationController
 
     #POST '/posts'
     def create
-        render json: Post.create!(post_params), status: :created
+        user = current_user
+        comic = Comic.find_or_create_by( comic_params )
+
+        post = Post.new( post_params )
+        post.user_id = user.id
+        post.comic_id = comic.id
+        post.save
+
+        render json: post, status: :created
     end
 
     #PATCH '/post/:id'
@@ -33,7 +41,11 @@ class PostsController < ApplicationController
     private
 
     def post_params
-        params.permit(:user_id, :comic_id, :comment, :like)
+        params.permit(:user_id, :comic_id, :comment)
+    end
+
+    def comic_params
+        params.permit(:title, :format, :thumbnail, :pageCount)
     end
 
     def find_post

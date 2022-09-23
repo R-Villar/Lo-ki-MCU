@@ -9,7 +9,7 @@ import ComicPage from './components/ComicPage';
 
 function App() {
 	const [comicData, SetComicData] = useState([]);
-	const [currentUser, setCurrentUser] = useState([]);
+	const [currentUser, setCurrentUser] = useState('');
 	const [errors, setErrors] = useState([])
 	const [setComic, setSelectedComic] = useState({});
 
@@ -39,7 +39,7 @@ function App() {
   return (
 		<div className='App'>
 			<>welcome {currentUser.username}</>
-			<NavBar />
+			<NavBar setCurrentUser={setCurrentUser} />
 			<Switch>
 				<Route exact path='/'>
 					<Home

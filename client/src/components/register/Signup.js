@@ -24,7 +24,10 @@ export default function Signup({setCurrentUser}) {
 
 	// adding avatars to users later on
 	// const handleAvatarChange = (e) => {
-	//     setFormData(formData => ({...formData, 'avatar': e.target.files[0]}));
+	//     setUserFormData((formData) => ({
+	// 		...formData,
+	// 		avatar: e.target.files[0],
+	// 	}));
 	// }
 
 	const onSubmit = (e) => {
