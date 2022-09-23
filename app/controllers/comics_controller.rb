@@ -1,5 +1,5 @@
 class ComicsController < ApplicationController
-
+    skip_before_action :authenticate_user
 
     #GET '/comics'
     # def index 

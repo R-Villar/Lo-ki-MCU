@@ -11,6 +11,8 @@ function App() {
 	const [comicData, SetComicData] = useState([]);
 	const [currentUser, setCurrentUser] = useState([]);
 	const [errors, setErrors] = useState([])
+	const [setComic, setSelectedComic] = useState({});
+
 
 	// fetch comic data
 	useEffect(() => {
@@ -29,9 +31,9 @@ function App() {
 		});
 	}, []);
 
-		console.log(errors)
-		console.log(currentUser)
-
+	console.log(errors)
+	console.log(currentUser)
+	console.log(setComic);
 	
 
   return (
@@ -40,7 +42,10 @@ function App() {
 			<NavBar />
 			<Switch>
 				<Route exact path='/'>
-					<Home comicData={comicData} />
+					<Home
+						setSelectedComic={setSelectedComic}
+						comicData={comicData}
+					/>
 				</Route>
 				<Route path='/signup'>
 					<Signup setCurrentUser={setCurrentUser} />
@@ -49,7 +54,7 @@ function App() {
 					<Login setCurrentUser={setCurrentUser} />
 				</Route>
 				<Route path='/comic-page'>
-					<ComicPage />
+					<ComicPage currentUser={currentUser} setComic={setComic} />
 				</Route>
 			</Switch>
 		</div>
