@@ -1,4 +1,4 @@
 class ComicPostsSerializer < ActiveModel::Serializer
-	attributes :id, :title, :characters, :images, :thumbnail, :creators
+	attributes :id, :title, :format, :thumbnail, :pageCount
 	has_many :posts
 end

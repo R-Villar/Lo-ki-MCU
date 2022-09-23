@@ -45,10 +45,9 @@ ActiveRecord::Schema.define(version: 2022_09_22_150054) do
 
   create_table "comics", force: :cascade do |t|
     t.string "title"
-    t.string "characters"
-    t.string "images"
+    t.string "format"
     t.string "thumbnail"
-    t.string "creators"
+    t.integer "pageCount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
