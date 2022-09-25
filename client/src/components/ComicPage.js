@@ -14,7 +14,6 @@ import TextField from "@mui/material/TextField";
 const image_size = "portrait_uncanny";
 export default function ComicPage({setComic, currentUser}) {
 	// console.log(setComic)
-	const [errors, setErrors] = useState([]);
 	// comment form
 	const [formData, setFormData] = useState({});
 	// disable send comment if user is not logged in
@@ -50,16 +49,7 @@ export default function ComicPage({setComic, currentUser}) {
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify(infoToSend),
 		})
-        .then((response) => {
-			if (response.ok) {
-				response.json().then((post) => {
-				});
-			} else {
-				response.json().then((json) => setErrors(json.errors));
-			}
-		});
-       
-
+        .then( res => res.json())
 		console.log(infoToSend);
 	};
 

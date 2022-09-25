@@ -20,13 +20,13 @@ puts "creating seeds"
 #     password: '12345')
 # end
 
-# 5.times do Post.create(
-#     comment: Faker::Lorem.sentence,
-#     like: 5,
-#     user_id: rand(1..5),
-#     comic_id: 1
-# )
-# end
+5.times do Post.create(
+    comment: Faker::Lorem.sentence,
+    like: 5,
+    user_id: rand(1),
+    comic_id: 1
+)
+end
 
 
 

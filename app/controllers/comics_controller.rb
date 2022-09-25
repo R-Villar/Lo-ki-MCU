@@ -2,12 +2,13 @@ class ComicsController < ApplicationController
     skip_before_action :authenticate_user
 
     #GET '/comics'
-    # def index 
-    #     render json: Comic.all, status: :ok
-    # end
-
     def index
-        r = RestClient.get(fetch_url)
+        render json: Comic.all, status: :ok
+    end
+
+    #GET '/comics' 
+    def api_comics
+         r = RestClient.get(fetch_url)
         json = JSON.parse(r.body)
         render json: json['data']['results']
         # json['data']['results'].map { |comic| comic['title']}
