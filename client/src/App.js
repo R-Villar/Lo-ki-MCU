@@ -6,13 +6,15 @@ import Signup from './components/register/Signup';
 import Login from './components/register/Login';
 import NavBar from './components/NavBar';
 import ComicPage from './components/ComicPage';
+import ComicsWithPosts from './components/discussions/ComicsWithPosts';
+import ComicDiscussion from './components/discussions/ComicDiscussion';
 
 function App() {
 	const [comicData, SetComicData] = useState([]);
 	const [currentUser, setCurrentUser] = useState('');
 	const [errors, setErrors] = useState([])
 	const [setComic, setSelectedComic] = useState({});
-
+	const [ selectedDiscussionComic, setSelectedDiscussionComic ] = useState([])
 
 	// const [updatedComicData, setUpdatedComicData ] = useState([])
 
@@ -25,7 +27,7 @@ function App() {
 
 	// fetch comic data
 	useEffect(() => {
-		fetch(`/comics`)
+		fetch(`/api-comics`)
 			.then((res) => res.json())
 			.then((data) => SetComicData(data));
 	}, []);
@@ -40,9 +42,9 @@ function App() {
 		});
 	}, []);
 
-	console.log(errors)
+	// console.log(errors)
 	// console.log(currentUser)
-	console.log(setComic);
+	// console.log(selectedDiscussionComic);
 	
 
   return (
@@ -66,6 +68,13 @@ function App() {
 				</Route>
 				<Route path='/comic-page'>
 					<ComicPage currentUser={currentUser} setComic={setComic} />
+				</Route>
+
+				<Route path='/discussions'>
+					<ComicsWithPosts setSelectedDiscussionComic={setSelectedDiscussionComic} />
+				</Route>
+				<Route path='/testfornow'>
+					<ComicDiscussion selectedDiscussionComic={selectedDiscussionComic} />
 				</Route>
 			</Switch>
 		</div>
