@@ -7,21 +7,10 @@ class ComicsController < ApplicationController
     # end
 
     def index
-        # ts = DateTime.now.strftime('%Q')
-        # baseUrl = 'https://gateway.marvel.com/v1/public/comics'
-        # apiPublicKey = ENV['MARVEL_PUBLIC_API_KEY']
-        # apiPrivateKey = ENV['MARVEL_PRIVATE_KEY']
-
-        # newString = ts + apiPrivateKey + apiPublicKey
-        # hash = Digest::MD5.hexdigest(newString)
-        # url = "#{baseUrl}?ts=#{ts}&apikey=#{apiPublicKey}&hash=#{hash}&titleStartsWith=#{"THOR"}" #&titleStartsWith=#{"THOR"}
-
         r = RestClient.get(fetch_url)
         json = JSON.parse(r.body)
-        # byebug 
         render json: json['data']['results']
         # json['data']['results'].map { |comic| comic['title']}
-
     end
 
 

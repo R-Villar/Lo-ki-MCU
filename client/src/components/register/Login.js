@@ -1,11 +1,9 @@
 import {useState} from "react";
-import {useHistory} from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
 
 
 export default function Login({setCurrentUser}) {

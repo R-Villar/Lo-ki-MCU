@@ -1,15 +1,15 @@
 import {useState} from "react";
-import {useHistory} from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
+
 
 
 
 export default function Signup({setCurrentUser}) {
+	// const history = useHistory();
 	const [userFormData, setUserFormData] = useState({});
 	const [errors, setErrors] = useState([]);
 	// form data from user input 
@@ -19,8 +19,6 @@ export default function Signup({setCurrentUser}) {
 			[e.target.name]: e.target.value,
 		}));
 	};
-
-	// console.log(setCurrentUser)
 
 	// adding avatars to users later on
 	// const handleAvatarChange = (e) => {
@@ -53,12 +51,10 @@ export default function Signup({setCurrentUser}) {
 	console.log(errors);
 	return (
 		<Box
-			// container
 			onSubmit={onSubmit}
 			spacing={5}
 			component='form'
 			noValidate
-			// autoComplete
 			sx={{
 				display: "flex",
 				flexDirection: "column",

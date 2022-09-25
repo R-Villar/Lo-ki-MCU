@@ -14,6 +14,15 @@ function App() {
 	const [setComic, setSelectedComic] = useState({});
 
 
+	// const [updatedComicData, setUpdatedComicData ] = useState([])
+
+	// const newUpdatedComicData = newObj => {
+	// 	SetComicData((comicData) => [...comicData, newObj]);
+	// }
+
+	// console.log(comicData);
+	// console.log(comicData);
+
 	// fetch comic data
 	useEffect(() => {
 		fetch(`/comics`)
@@ -32,13 +41,15 @@ function App() {
 	}, []);
 
 	console.log(errors)
-	console.log(currentUser)
+	// console.log(currentUser)
 	console.log(setComic);
 	
 
   return (
 		<div className='App'>
-			<>welcome {currentUser.username}</>
+			<div>
+				{currentUser? <h1>welcome {currentUser.username}</h1> : null}
+			</div>
 			<NavBar setCurrentUser={setCurrentUser} />
 			<Switch>
 				<Route exact path='/'>
