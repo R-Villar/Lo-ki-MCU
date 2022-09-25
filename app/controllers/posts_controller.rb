@@ -41,7 +41,7 @@ class PostsController < ApplicationController
     private
 
     def post_params
-        params.permit(:user_id, :comic_id, :comment)
+        params.permit(:user_id, :comic_id, :api_comic_id, :comment)
     end
 
     def comic_params

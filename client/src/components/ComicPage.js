@@ -1,68 +1,69 @@
 import { useState} from "react";
-import {useParams} from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import {CardActionArea} from "@mui/material";
-import * as React from "react";
-import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {Link} from "react-router-dom";
-
-
-
 
 
 
 const image_size = "portrait_uncanny";
 export default function ComicPage({setComic, currentUser}) {
-    // console.log(setComic)
-    // comment form
-    const [formData, setFormData] = useState({});
-    // disable send comment if user is not logged in 
-    const [ disableCommentButton, setDisableCommentButton ] = useState(!currentUser)
+	// console.log(setComic)
+	const [errors, setErrors] = useState([]);
+	// comment form
+	const [formData, setFormData] = useState({});
+	// disable send comment if user is not logged in
+	const disableCommentButton  = !currentUser
 
-    // console.log(disableCommentButton)
+	console.log(setComic);
 
-    const userInput = (e) => {
-        setFormData((formData) => ({
-            ...formData, [e.target.name]: e.target.value}))
-    }
-
-
-    const comicData = {
+	const userInput = (e) => {
+		setFormData((formData) => ({
+			...formData,
+			[e.target.name]: e.target.value,
+		}));
+	};
+	// `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
+	const comicData = {
+		api_comic_id: setComic.id,
 		title: setComic.title,
 		thumbnail: `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
 		format: setComic.format,
-		pageCount: setComic.pageCount
+		pageCount: setComic.pageCount,
 	};
 
-    console.log(comicData)
+	const newComment = (e) => {
+		e.preventDefault();
 
-    const newComment = (e) => {
-        e.preventDefault()
-
-        const infoToSend = {
+		const infoToSend = {
 			...formData,
 			...comicData,
 		};
 
-
-        fetch("/posts", {
+		fetch("/posts", {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify( infoToSend ),
+			body: JSON.stringify(infoToSend),
 		})
-        .then(res => res.json())
-        .then(console.log)
-        // console.log(infoToSend);
-    }
-	// console.log(formData);
-    // console.log(setComic);
+        .then((response) => {
+			if (response.ok) {
+				response.json().then((post) => {
+				});
+			} else {
+				response.json().then((json) => setErrors(json.errors));
+			}
+		});
+       
+
+		console.log(infoToSend);
+	};
+
+
 	return (
 		<div>
 			<Box
@@ -143,7 +144,11 @@ export default function ComicPage({setComic, currentUser}) {
 					}}
 				/>
 				<Stack direction='row' justifyContent='flex-end' spacing={2}>
-					<Button type="submit" disabled={disableCommentButton} variant='contained'>
+					<Button
+						type='submit'
+						disabled={disableCommentButton}
+						variant='contained'
+					>
 						Send
 					</Button>
 				</Stack>
