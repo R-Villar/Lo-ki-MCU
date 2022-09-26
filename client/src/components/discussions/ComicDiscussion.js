@@ -1,17 +1,35 @@
+import { useState, useEffect } from 'react'
+import EditPost from "./EditPost"
 
+export default function ComicDiscussion({selectedDiscussionComic, deletePost, updatedComic, setDbComicData, setUpdatedPost, dBFetch}) {
+    
+    const [selectedComicItem, setSelectedComicItem] = useState(selectedDiscussionComic);
 
-export default function ComicDiscussion({selectedDiscussionComic}) {
+    useEffect(() => {
+        const data = window.localStorage.getItem('DISCUSSION_COMIC')
+        if (data !== null ) setSelectedComicItem(JSON.parse(data))
+    }, [])
 
+    useEffect(() => {
+        window.localStorage.setItem('DISCUSSION_COMIC', JSON.stringify(selectedComicItem))
+      }, [selectedComicItem]);
 
-    const {id, title, thumbnail, format, number_of_posts, posts} = selectedDiscussionComic
-    console.log(posts)
+    console.log(selectedComicItem)
+    const {id, title, thumbnail, format, number_of_posts, posts} = selectedComicItem
+    // setUpdatedPost(posts)
 
+    // setItems(selectedDiscussionComic)
+ 
     const displayComments = posts?.map((post) => {
         return (
             <div key={post.id}>
-                <p>{post.user.username}</p>
-                <p>{post.comment}</p>
-                <p>{post.like}</p>
+                <EditPost
+                    dBFetch={dBFetch}
+                    deletePost={deletePost}
+                    selectedDiscussionComic={selectedDiscussionComic}
+                    setDbComicData={setDbComicData}
+                    post={post}
+                />
             </div>
         )
     })

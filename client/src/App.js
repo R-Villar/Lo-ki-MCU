@@ -6,7 +6,7 @@ import Signup from './components/register/Signup';
 import Login from './components/register/Login';
 import NavBar from './components/NavBar';
 import ComicPage from './components/ComicPage';
-import ComicsWithPosts from './components/discussions/ComicsWithPosts';
+import DiscussionsPage from './components/discussions/DiscussionsPage';
 import ComicDiscussion from './components/discussions/ComicDiscussion';
 
 function App() {
@@ -14,17 +14,18 @@ function App() {
 	const [currentUser, setCurrentUser] = useState('');
 	const [errors, setErrors] = useState([])
 	const [setComic, setSelectedComic] = useState({});
-	const [ selectedDiscussionComic, setSelectedDiscussionComic ] = useState([])
+	const [ selectedDiscussionComic, setSelectedDiscussionComic ] = useState({})
+	const [ dbComicData, setDbComicData ] = useState([])
+	const [ search, setSearch ] = useState('hulk')
+	// console.log(selectedDiscussionComic)
 
-	// const [updatedComicData, setUpdatedComicData ] = useState([])
-
-	// const newUpdatedComicData = newObj => {
-	// 	SetComicData((comicData) => [...comicData, newObj]);
-	// }
-
-	// console.log(comicData);
-	// console.log(comicData);
-
+	function deletePost(selected) {
+		const updatedPosts = selectedDiscussionComic.posts.filter((post) => post.id !== selected) 
+		console.log('to delete', selected, 'discuss', selectedDiscussionComic.posts)
+		setSelectedDiscussionComic(updatedPosts)
+		console.log(updatedPosts)
+	}
+	// deletePost()
 	// fetch comic data
 	useEffect(() => {
 		fetch(`/api-comics`)
@@ -42,17 +43,29 @@ function App() {
 		});
 	}, []);
 
-	// console.log(errors)
-	// console.log(currentUser)
-	// console.log(selectedDiscussionComic);
-	
+	// adds comic to discussions page.
+	const updateDbComics = (addedComic) => {
+		setDbComicData([...dbComicData, addedComic])
+	}
 
-  return (
+	// fetch data from DB
+	const dBFetch = () => {
+		fetch(`/comics`)
+			.then((res) => res.json())
+			.then((data) => setDbComicData(data));
+	} 
+
+	useEffect(() => {
+		dBFetch()
+	}, []);
+
+
+  	return (
 		<div className='App'>
 			<div>
 				{currentUser? <h1>welcome {currentUser.username}</h1> : null}
 			</div>
-			<NavBar setCurrentUser={setCurrentUser} />
+			<NavBar setSearch={setSearch} setCurrentUser={setCurrentUser} />
 			<Switch>
 				<Route exact path='/'>
 					<Home
@@ -67,18 +80,33 @@ function App() {
 					<Login setCurrentUser={setCurrentUser} />
 				</Route>
 				<Route path='/comic-page'>
-					<ComicPage currentUser={currentUser} setComic={setComic} />
+					<ComicPage
+						dBFetch={dBFetch}
+						updateDbComics={updateDbComics}
+						currentUser={currentUser}
+						setComic={setComic}
+					/>
 				</Route>
 
 				<Route path='/discussions'>
-					<ComicsWithPosts setSelectedDiscussionComic={setSelectedDiscussionComic} />
+					<DiscussionsPage
+						// setDbComicData={setDbComicData}
+						dbComicData={dbComicData}
+						setSelectedDiscussionComic={setSelectedDiscussionComic}
+					/>
 				</Route>
 				<Route path='/testfornow'>
-					<ComicDiscussion selectedDiscussionComic={selectedDiscussionComic} />
+					<ComicDiscussion
+						dBFetch={dBFetch}
+						deletePost={deletePost}
+						// setUpdatedPost={setUpdatedPost}
+						setDbComicData={setDbComicData}
+						selectedDiscussionComic={selectedDiscussionComic}
+					/>
 				</Route>
 			</Switch>
 		</div>
-  );
+  	);
 }
 
 export default App;
