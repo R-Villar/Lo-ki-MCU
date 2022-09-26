@@ -12,8 +12,8 @@ import TextField from "@mui/material/TextField";
 
 
 const image_size = "portrait_uncanny";
-export default function ComicPage({setComic, currentUser}) {
-	// console.log(setComic)
+export default function ComicPage({setComic, currentUser, updateDbComics, dBFetch}) {
+	const [errors, setErrors] = useState([])
 	// comment form
 	const [formData, setFormData] = useState({});
 	// disable send comment if user is not logged in
@@ -29,7 +29,6 @@ export default function ComicPage({setComic, currentUser}) {
 	};
 	// `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
 	const comicData = {
-		api_comic_id: setComic.id,
 		title: setComic.title,
 		thumbnail: `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
 		format: setComic.format,
@@ -49,10 +48,17 @@ export default function ComicPage({setComic, currentUser}) {
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify(infoToSend),
 		})
-        .then( res => res.json())
-		console.log(infoToSend);
+        .then( res => {
+			if(res.ok){
+				res.json().then(
+					updateDbComics(infoToSend),
+					dBFetch())
+			}else {
+				res.json().then((json) => setErrors(json.errors))
+			}
+		})
+		console.log(errors)
 	};
-
 
 	return (
 		<div>

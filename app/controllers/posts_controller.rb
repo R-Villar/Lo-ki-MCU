@@ -24,7 +24,7 @@ class PostsController < ApplicationController
         render json: post, status: :created
     end
 
-    #PATCH '/post/:id'
+    #PATCH '/posts/:id'
     def update 
         post = find_post
         post.update!(post_params)
