@@ -12,14 +12,16 @@ import TextField from "@mui/material/TextField";
 
 
 const image_size = "portrait_uncanny";
-export default function ComicPage({setComic, currentUser, updateDbComics, dBFetch}) {
+export default function ComicPage({selectedComic, currentUser, updateDbComics, dBFetch}) {
 	const [errors, setErrors] = useState([])
 	// comment form
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState({
+		like: 0
+	});
 	// disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
 
-	console.log(setComic);
+	console.log(selectedComic);
 
 	const userInput = (e) => {
 		setFormData((formData) => ({
@@ -29,10 +31,10 @@ export default function ComicPage({setComic, currentUser, updateDbComics, dBFetc
 	};
 	// `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
 	const comicData = {
-		title: setComic.title,
-		thumbnail: `${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`,
-		format: setComic.format,
-		pageCount: setComic.pageCount,
+		title: selectedComic.title,
+		thumbnail: `${selectedComic.thumbnail.path}/${image_size}.${selectedComic.thumbnail.extension}`,
+		format: selectedComic.format,
+		pageCount: selectedComic.pageCount,
 	};
 
 	const newComment = (e) => {
@@ -42,6 +44,8 @@ export default function ComicPage({setComic, currentUser, updateDbComics, dBFetc
 			...formData,
 			...comicData,
 		};
+
+		console.log(infoToSend)
 
 		fetch("/posts", {
 			method: "POST",
@@ -79,14 +83,14 @@ export default function ComicPage({setComic, currentUser, updateDbComics, dBFetc
 				<Card elevation={3} sx={{maxWidth: 400}}>
 					<CardActionArea>
 						<Typography gutterBottom variant='h5' component='div'>
-							{setComic.title}
+							{selectedComic.title}
 						</Typography>
 						<CardMedia
 							component='img'
 							height='600'
-							key={setComic.id}
-							alt={setComic.title}
-							src={`${setComic.thumbnail.path}/${image_size}.${setComic.thumbnail.extension}`}
+							key={selectedComic.id}
+							alt={selectedComic.title}
+							src={`${selectedComic.thumbnail.path}/${image_size}.${selectedComic.thumbnail.extension}`}
 						/>
 						<CardContent>
 							<Typography
@@ -94,14 +98,14 @@ export default function ComicPage({setComic, currentUser, updateDbComics, dBFetc
 								variant='h4'
 								component='div'
 							>
-								{setComic.format}
+								{selectedComic.format}
 							</Typography>
 							<Typography
 								gutterBottom
 								variant='h6'
 								component='div'
 							>
-								Issue number #{setComic.issueNumber}
+								Issue number #{selectedComic.issueNumber}
 							</Typography>
 						</CardContent>
 					</CardActionArea>

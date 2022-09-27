@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 export default function DiscussionsPage({setSelectedDiscussionComic, dbComicData}) {
 
-
     const displayDbComics =  dbComicData?.map((comic) => {
 
         function onComicClick() {
@@ -17,7 +16,7 @@ export default function DiscussionsPage({setSelectedDiscussionComic, dbComicData
                 <p>format {comic.format}</p>
                 <p> number of posts {comic.number_of_posts}</p>
                 {/* <button onClick={onComicClick}>Join discussion</button> */}
-                <Link to={'/testfornow'} onClick={onComicClick}>Join discussion</Link>
+                <Link to={'/comments'} onClick={onComicClick}>Join discussion</Link>
             </div>
         )
     })

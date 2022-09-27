@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 
 
 
-export default function NavBar({setCurrentUser, setSearch}) {
+export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 	const [formData, setFormData] = useState('');
+
 	const handleLogout = () => {
 		fetch("/logout", {method: "DELETE"}).then((res) => {
 			if (res.ok) {
@@ -15,7 +16,11 @@ export default function NavBar({setCurrentUser, setSearch}) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		setSearch(formData)
+		if(formData === ''){
+
+		}else {
+			setSearch(formData)
+		}
 	}
 
 	const handleChange = (e) => {
@@ -26,7 +31,7 @@ export default function NavBar({setCurrentUser, setSearch}) {
 	return (
 		<div>
 			<NavLink to='/'>Home</NavLink>
-			<NavLink to='/signup'>signup</NavLink>
+			{!currentUser? (<NavLink to='/signup'>signup</NavLink>): null}
 			<NavLink to='/login'>Login</NavLink>
 			{/* <NavLink to='/testfornow'>Test</NavLink> */}
 			<NavLink to='/discussions'>Discussions</NavLink>

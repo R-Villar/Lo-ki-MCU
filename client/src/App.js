@@ -13,25 +13,24 @@ function App() {
 	const [comicData, SetComicData] = useState([]);
 	const [currentUser, setCurrentUser] = useState('');
 	const [errors, setErrors] = useState([])
-	const [setComic, setSelectedComic] = useState({});
+	const [selectedComic, setSelectedComic] = useState({});
 	const [ selectedDiscussionComic, setSelectedDiscussionComic ] = useState({})
 	const [ dbComicData, setDbComicData ] = useState([])
-	const [ search, setSearch ] = useState('hulk')
-	// console.log(selectedDiscussionComic)
+	const [ search, setSearch ] = useState('thor')
 
 	function deletePost(selected) {
 		const updatedPosts = selectedDiscussionComic.posts.filter((post) => post.id !== selected) 
-		console.log('to delete', selected, 'discuss', selectedDiscussionComic.posts)
-		setSelectedDiscussionComic(updatedPosts)
+		setDbComicData(updatedPosts)
 		console.log(updatedPosts)
 	}
-	// deletePost()
-	// fetch comic data
+
+	// search api
 	useEffect(() => {
-		fetch(`/api-comics`)
+		fetch(`/api-search/${search}`)
 			.then((res) => res.json())
 			.then((data) => SetComicData(data));
-	}, []);
+	}, [search]);
+
 
 	useEffect(() => {
 		fetch("/me").then((res) => {
@@ -59,13 +58,12 @@ function App() {
 		dBFetch()
 	}, []);
 
-
   	return (
 		<div className='App'>
 			<div>
-				{currentUser? <h1>welcome {currentUser.username}</h1> : null}
+				{currentUser? <h1>Welcome, {currentUser.username}</h1> : null}
 			</div>
-			<NavBar setSearch={setSearch} setCurrentUser={setCurrentUser} />
+			<NavBar currentUser={currentUser} setSearch={setSearch} setCurrentUser={setCurrentUser} />
 			<Switch>
 				<Route exact path='/'>
 					<Home
@@ -84,23 +82,22 @@ function App() {
 						dBFetch={dBFetch}
 						updateDbComics={updateDbComics}
 						currentUser={currentUser}
-						setComic={setComic}
+						selectedComic={selectedComic}
 					/>
 				</Route>
 
 				<Route path='/discussions'>
 					<DiscussionsPage
-						// setDbComicData={setDbComicData}
 						dbComicData={dbComicData}
 						setSelectedDiscussionComic={setSelectedDiscussionComic}
 					/>
 				</Route>
-				<Route path='/testfornow'>
+				<Route path={`/comments`}>
 					<ComicDiscussion
+						currentUser={currentUser}
 						dBFetch={dBFetch}
 						deletePost={deletePost}
-						// setUpdatedPost={setUpdatedPost}
-						setDbComicData={setDbComicData}
+						updateDbComics={updateDbComics}
 						selectedDiscussionComic={selectedDiscussionComic}
 					/>
 				</Route>

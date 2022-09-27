@@ -4,9 +4,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-
+import {useHistory} from "react-router-dom";
 
 export default function Login({setCurrentUser}) {
+	const history = useHistory();
 	const [formData, setFormData] = useState({});
 	const [errors, setErrors] = useState([]);
 	// user input for username and password
@@ -17,7 +18,6 @@ export default function Login({setCurrentUser}) {
 		}));
 	};
 
-	console.log(formData);
 
 	function onSubmit(e) {
 		e.preventDefault()
@@ -30,6 +30,7 @@ export default function Login({setCurrentUser}) {
 			if(res.ok) {
 				res.json().then((user) => {
 					setCurrentUser(user)
+					history.push('/home');
 				})
 			}else {
 				res.json().then((json) => setErrors(json.errors));
