@@ -28,23 +28,24 @@ export default function Signup({setCurrentUser}) {
 	// 	}));
 	// }
 
+
 	const onSubmit = (e) => {
 		e.preventDefault();
-
-		fetch("/users", {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify(userFormData),
-		})
-		.then( res => {
-			if(res.ok){
-				res.json().then(user => {
-					setCurrentUser(user);
-				})
-			}else {
-				res.json().then((json) => setErrors(json.errors))
-			}
-		})
+		console.log(userFormData.password)
+		// fetch("/users", {
+		// 	method: "POST",
+		// 	headers: {"Content-Type": "application/json"},
+		// 	body: JSON.stringify(userFormData),
+		// })
+		// .then( res => {
+		// 	if(res.ok){
+		// 		res.json().then(user => {
+		// 			setCurrentUser(user);
+		// 		})
+		// 	}else {
+		// 		res.json().then((json) => setErrors(json.errors))
+		// 	}
+		// })
 	};
 
 	console.log(userFormData);
@@ -91,6 +92,16 @@ export default function Signup({setCurrentUser}) {
 						label='password'
 						type='password'
 						name='password'
+						// value={formData.password}
+						onChange={handleChange}
+					/>
+					<TextField
+						id='margin-normal'
+						margin='normal'
+						required
+						label='confirm password'
+						type='password'
+						name='confirm password'
 						// value={formData.password}
 						onChange={handleChange}
 					/>

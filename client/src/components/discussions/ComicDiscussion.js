@@ -26,7 +26,7 @@ export default function ComicDiscussion({selectedDiscussionComic, deletePost, up
     //     localStorage.setItem('TESTING', JSON.stringify(selectedComicItem))
     // }, [selectedComicItem]);
 
-    // console.log(selectedComicItem)
+    console.log(selectedDiscussionComic)
    
     // setUpdatedPost(posts)
 
@@ -48,7 +48,7 @@ export default function ComicDiscussion({selectedDiscussionComic, deletePost, up
 
 		const infoToSend = {
 			...formData,
-			selectedDiscussionComic
+			...selectedDiscussionComic
 		};
 
 		console.log(infoToSend)
