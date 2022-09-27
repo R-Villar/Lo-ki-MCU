@@ -25,7 +25,7 @@ class PostsController < ApplicationController
     end
 
     #PATCH '/posts/:id'
-    def update 
+    def update
         post = find_post
         post.update!(post_params)
         render json: post, status: :accepted
@@ -41,7 +41,7 @@ class PostsController < ApplicationController
     private
 
     def post_params
-        params.permit(:user_id, :comic_id, :comment)
+        params.permit(:user_id, :comic_id, :comment, :like)
     end
 
     def comic_params

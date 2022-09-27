@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const image_size = "portrait_fantastic";
+const image_size = "portrait_uncanny";
 
 export default function Home({comicData, setSelectedComic}) {
 	// console.log(comicData);
@@ -21,7 +21,7 @@ export default function Home({comicData, setSelectedComic}) {
 				<p>{comic.format}</p>
 				<p>{comic.issueNumber}</p>
 				<Link to='/comic-page' onClick={onComicClick}>
-					click me
+					Add a comment
 				</Link>
 			</div>
 		);
