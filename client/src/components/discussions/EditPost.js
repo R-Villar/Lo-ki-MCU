@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function EditPost({post, updateDbComics, updatedComic, dBFetch, currentUser }) {
+export default function EditPost({post, currentUser, setDisplayComic }) {
 
     // console.log(selectedDiscussionComic)
     const [likes, setLikes ] = useState( post.like )
@@ -44,14 +44,20 @@ export default function EditPost({post, updateDbComics, updatedComic, dBFetch, c
     //     })
     // }
 
-    console.log(post.user.id)
+
     // disable the buttons if the user did not created those posts
     const disableButton = currentUser.id !== post.user.id
     // console.log(currentUser.id)
     // console.log(likes)
     // console.log(formData)
     // edit post 
-    const editComment = (e) => {
+
+    const openEdit = (e) => {
+        e.preventDefault()
+        setIsEditing((isEditing) => !isEditing);
+    }
+
+    const saveEditComment = (e) => {
         e.preventDefault()
 
         console.log(formData)
@@ -63,23 +69,23 @@ export default function EditPost({post, updateDbComics, updatedComic, dBFetch, c
         .then((response) => {
             if(response.ok){
                 response.json().then(updatedComment => {
-                    updateDbComics(updatedComment)
-                }, dBFetch()) 
+                    setDisplayComic(updatedComment)
+                }) 
             }else {
                 response.json().then((json) => setErrors(json.errors))
             }
         })
         // close form when save button is pressed
-        setIsEditing((isEditing) => !isEditing);
+        // setIsEditing((isEditing) => !isEditing);
     }
 
+    // user deletes their post
     const deleteComment = (e) => {
         e.preventDefault()
-
+        // console.log(post.id)
         fetch(`/posts/${post.id}`, {
             method: "DELETE",
         })
-        .then( () => {dBFetch()})
     }
 
     return (
@@ -89,7 +95,7 @@ export default function EditPost({post, updateDbComics, updatedComic, dBFetch, c
                     <p>User: {post.user.username}</p>
                     <p>{formData.comment}</p>
                     <button onClick={handleLikeClick}> {likes} likes</button>
-                    <button disabled={disableButton} onClick={editComment}>edit comment</button>
+                    <button disabled={disableButton} onClick={openEdit}>edit comment</button>
                     <button disabled={disableButton} onClick={deleteComment}>delete comment</button>
                 </div>
             ):(
@@ -97,7 +103,7 @@ export default function EditPost({post, updateDbComics, updatedComic, dBFetch, c
                     <input onChange={handleCommentChange} name='comment'
                         defaultValue={post.comment}
                     />
-                    <button onClick={editComment} type='submit'>save</button>
+                    <button onClick={saveEditComment} type='submit'>save</button>
                 </form>
             )}
         </div>
