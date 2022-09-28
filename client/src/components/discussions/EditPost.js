@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function EditPost({post, selectedDiscussionComic, deletePost, updateDbComics, updatedComic, dBFetch, currentUser }) {
+export default function EditPost({post, updateDbComics, updatedComic, dBFetch, currentUser }) {
 
     // console.log(selectedDiscussionComic)
     const [likes, setLikes ] = useState( post.like )
@@ -27,8 +27,6 @@ export default function EditPost({post, selectedDiscussionComic, deletePost, upd
         setIsClicked(!isClicked);
     };
 
-
-
     // const handleUpdateLikes = () => {
     //     fetch(`/posts/${post.id}`,  {
     //         method: "PATCH",
@@ -45,7 +43,6 @@ export default function EditPost({post, selectedDiscussionComic, deletePost, upd
     //         }
     //     })
     // }
-
 
 
     // disable the buttons if the user did not created those posts
@@ -83,7 +80,6 @@ export default function EditPost({post, selectedDiscussionComic, deletePost, upd
             method: "DELETE",
         })
         .then( () => {dBFetch()})
-        deletePost(post.id)
     }
 
     return (

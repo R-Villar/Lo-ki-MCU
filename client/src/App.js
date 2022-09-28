@@ -14,16 +14,10 @@ function App() {
 	const [currentUser, setCurrentUser] = useState('');
 	const [errors, setErrors] = useState([])
 	const [selectedComic, setSelectedComic] = useState({});
-	const [ selectedDiscussionComic, setSelectedDiscussionComic ] = useState({})
 	const [ dbComicData, setDbComicData ] = useState([])
 	const [ search, setSearch ] = useState('thor')
 
-	function deletePost(selected) {
-		const updatedPosts = selectedDiscussionComic.posts.filter((post) => post.id !== selected) 
-		setDbComicData(updatedPosts)
-		console.log(updatedPosts)
-	}
-
+	
 	// search api
 	useEffect(() => {
 		fetch(`/api-search/${search}`)
@@ -52,7 +46,7 @@ function App() {
 		fetch(`/comics`)
 			.then((res) => res.json())
 			.then((data) => setDbComicData(data));
-	} 
+	}
 
 	useEffect(() => {
 		dBFetch()
@@ -89,16 +83,13 @@ function App() {
 				<Route path='/discussions'>
 					<DiscussionsPage
 						dbComicData={dbComicData}
-						setSelectedDiscussionComic={setSelectedDiscussionComic}
 					/>
 				</Route>
-				<Route path={`/comments`}>
+				<Route path='/comics/:id'>
 					<ComicDiscussion
 						currentUser={currentUser}
 						dBFetch={dBFetch}
-						deletePost={deletePost}
 						updateDbComics={updateDbComics}
-						selectedDiscussionComic={selectedDiscussionComic}
 					/>
 				</Route>
 			</Switch>

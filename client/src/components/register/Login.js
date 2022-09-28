@@ -30,7 +30,7 @@ export default function Login({setCurrentUser}) {
 			if(res.ok) {
 				res.json().then((user) => {
 					setCurrentUser(user)
-					history.push('/home');
+					history.push('/');
 				})
 			}else {
 				res.json().then((json) => setErrors(json.errors));
