@@ -17,7 +17,6 @@ function App() {
 	const [ dbComicData, setDbComicData ] = useState([])
 	const [ search, setSearch ] = useState('thor')
 
-	
 	// search api
 	useEffect(() => {
 		fetch(`/api-search/${search}`)
@@ -25,7 +24,7 @@ function App() {
 			.then((data) => SetComicData(data));
 	}, [search]);
 
-
+	// fetch user data
 	useEffect(() => {
 		fetch("/me").then((res) => {
 			if (res.ok) {
@@ -54,10 +53,10 @@ function App() {
 
   	return (
 		<div className='App'>
-			<div>
-				{currentUser? <h1>Welcome, {currentUser.username}</h1> : null}
-			</div>
 			<NavBar currentUser={currentUser} setSearch={setSearch} setCurrentUser={setCurrentUser} />
+			<div>
+				{currentUser? <h4>Welcome, {currentUser.username}</h4> : null}
+			</div>
 			<Switch>
 				<Route exact path='/'>
 					<Home

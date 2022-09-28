@@ -95,7 +95,7 @@ export default function Signup({setCurrentUser}) {
 						// value={formData.password}
 						onChange={handleChange}
 					/>
-					<TextField
+					{/* <TextField
 						id='margin-normal'
 						margin='normal'
 						required
@@ -104,7 +104,7 @@ export default function Signup({setCurrentUser}) {
 						name='confirm password'
 						// value={formData.password}
 						onChange={handleChange}
-					/>
+					/> */}
 					{/* Buttons cancel and submit  */}
 					<Stack
 						sx={{m: 1}}

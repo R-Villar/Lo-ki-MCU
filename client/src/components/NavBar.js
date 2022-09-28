@@ -30,6 +30,7 @@ export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 
 	return (
 		<div>
+			<h1>Raters of the Galaxy</h1>
 			<NavLink to='/'>Home</NavLink>
 			{!currentUser? (<NavLink to='/signup'>signup</NavLink>): null}
 			<NavLink to='/login'>Login</NavLink>
