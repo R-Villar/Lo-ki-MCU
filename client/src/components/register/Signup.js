@@ -32,24 +32,24 @@ export default function Signup({setCurrentUser}) {
 	const onSubmit = (e) => {
 		e.preventDefault();
 		console.log(userFormData.password)
-		// fetch("/users", {
-		// 	method: "POST",
-		// 	headers: {"Content-Type": "application/json"},
-		// 	body: JSON.stringify(userFormData),
-		// })
-		// .then( res => {
-		// 	if(res.ok){
-		// 		res.json().then(user => {
-		// 			setCurrentUser(user);
-		// 		})
-		// 	}else {
-		// 		res.json().then((json) => setErrors(json.errors))
-		// 	}
-		// })
+		fetch("/users", {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify(userFormData),
+		})
+		.then( res => {
+			if(res.ok){
+				res.json().then(user => {
+					setCurrentUser(user);
+				})
+			}else {
+				res.json().then((json) => setErrors(json.errors))
+			}
+		})
 	};
 
-	console.log(userFormData);
-	console.log(errors);
+	// console.log(userFormData);
+	// console.log(errors);
 	return (
 		<Box
 			onSubmit={onSubmit}

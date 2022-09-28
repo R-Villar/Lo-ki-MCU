@@ -1,5 +1,4 @@
 class PostsController < ApplicationController
-    skip_before_action :authenticate_user
     
     #GET '/posts'
     def index
@@ -41,7 +40,7 @@ class PostsController < ApplicationController
     private
 
     def post_params
-        params.permit(:user_id, :comic_id, :comment, :like)
+        params.permit(:comment, :like)
     end
 
     def comic_params

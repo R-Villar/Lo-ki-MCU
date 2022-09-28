@@ -44,7 +44,7 @@ export default function EditPost({post, updateDbComics, updatedComic, dBFetch, c
     //     })
     // }
 
-
+    console.log(post.user.id)
     // disable the buttons if the user did not created those posts
     const disableButton = currentUser.id !== post.user.id
     // console.log(currentUser.id)
