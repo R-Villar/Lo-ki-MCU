@@ -8,30 +8,19 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import {useParams} from "react-router-dom";
 import EditPost from "./EditPost"
 
-export default function ComicDiscussion({selectedDiscussionComic, deletePost, updateDbComics, dBFetch, currentUser}) {
-    const {id, title, thumbnail, format, number_of_posts, posts} = selectedDiscussionComic
+export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser}) {
+   
     const [formData, setFormData] = useState({like: 0});
     const [errors, setErrors] = useState([])
-    // const [selectedComicItem, setSelectedComicItem] = useState(selectedDiscussionComic);
-    // setSelectedComicItem(selectedDiscussionComic)
-    
-    // useEffect(() => {
-    //     const data = localStorage.getItem('TESTING')
-    //     if (data ) setSelectedComicItem(JSON.parse(data))
-    // }, [])
+    const [ displayComic, setDisplayComic ] = useState([])
+     const {title, thumbnail, format, number_of_posts, posts} = displayComic
+    let {id} = useParams();
 
-    // useEffect(() => {
-    //     localStorage.setItem('TESTING', JSON.stringify(selectedComicItem))
-    // }, [selectedComicItem]);
-
-    console.log(selectedDiscussionComic)
+    console.log(displayComic)
    
-    // setUpdatedPost(posts)
-
-    // setItems(selectedDiscussionComic)
-
     // disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
 
@@ -42,13 +31,21 @@ export default function ComicDiscussion({selectedDiscussionComic, deletePost, up
 			[e.target.name]: e.target.value,
 		}));
 	};
+
+    // individual comic fetch
+    useEffect(() => {
+		fetch(`/comics/${id}`)
+			.then((res) => res.json())
+			.then((data) => setDisplayComic(data));
+	}, [id, dBFetch]);
+    
     // submit new comment
     const newComment = (e) => {
 		e.preventDefault();
 
 		const infoToSend = {
 			...formData,
-			...selectedDiscussionComic
+			...displayComic
 		};
 
 		console.log(infoToSend)
@@ -70,15 +67,12 @@ export default function ComicDiscussion({selectedDiscussionComic, deletePost, up
 		console.log(errors)
 	};
 
-
     const displayComments = posts?.map((post) => {        
         return (
             <div key={post.id}>
                 <EditPost
                     currentUser={currentUser}
                     dBFetch={dBFetch}
-                    deletePost={deletePost}
-                    selectedDiscussionComic={selectedDiscussionComic}
                     updateDbComics={updateDbComics}
                     post={post}
                 />
@@ -88,7 +82,7 @@ export default function ComicDiscussion({selectedDiscussionComic, deletePost, up
  
     return (
         <div>
-            <div key={id}>
+            <div key={displayComic.id}>
                 <h4>{title}</h4>
                 <img src={thumbnail} alt={title} />
                 <p>format {format}</p>
