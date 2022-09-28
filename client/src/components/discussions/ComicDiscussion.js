@@ -11,16 +11,15 @@ import TextField from "@mui/material/TextField";
 import {useParams} from "react-router-dom";
 import EditPost from "./EditPost"
 
-export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser}) {
+export default function ComicDiscussion({ currentUser}) {
    
     const [formData, setFormData] = useState({like: 0});
     const [errors, setErrors] = useState([])
     const [ displayComic, setDisplayComic ] = useState([])
-     const {title, thumbnail, format, number_of_posts, posts} = displayComic
+    const {title, thumbnail, format, number_of_posts, posts} = displayComic
+    const [userPost, setUserPost ] = useState()
     let {id} = useParams();
 
-    console.log(displayComic)
-   
     // disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
 
@@ -32,12 +31,13 @@ export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser})
 		}));
 	};
 
+
     // individual comic fetch
     useEffect(() => {
 		fetch(`/comics/${id}`)
 			.then((res) => res.json())
-			.then((data) => setDisplayComic(data));
-	}, [id, dBFetch]);
+			.then((comicsData) => setDisplayComic(comicsData));
+	}, [id, userPost, displayComic]);
 
     // submit new comment
     const newComment = (e) => {
@@ -58,23 +58,27 @@ export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser})
         .then( res => {
 			if(res.ok){
 				res.json().then(
-					setDisplayComic(infoToSend),
-					dBFetch())
+					newPosts(infoToSend))
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
 		})
-		console.log(errors)
 	};
 
-    const displayComments = posts?.map((post) => {    
+    // new posts
+    const newPosts = (newPost) => {
+        setUserPost([...posts, newPost])
+    }
+
+
+
+    const displayComments = posts?.map((post) => {
 
         return (
             <div key={post.id}>
                 <EditPost
+                    setDisplayComic={setDisplayComic}
                     currentUser={currentUser}
-                    dBFetch={dBFetch}
-                    updateDbComics={updateDbComics}
                     post={post}
                 />
             </div>
