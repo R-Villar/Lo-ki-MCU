@@ -1,4 +1,4 @@
 class PostSerializer < ActiveModel::Serializer
-  attributes :id, :comment, :like, :user
-  has_one :comic
+  attributes :id, :comment, :like
+  has_one :user
 end

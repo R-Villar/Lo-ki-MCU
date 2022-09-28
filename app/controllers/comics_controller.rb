@@ -1,5 +1,5 @@
 class ComicsController < ApplicationController
-    skip_before_action :authenticate_user
+    skip_before_action :authenticate_user, only: :api_comics_search
 
     #GET '/comics'
     def index
@@ -7,12 +7,12 @@ class ComicsController < ApplicationController
     end
 
     #GET '/comics/' 
-    def api_comics
-        r = RestClient.get(fetch_url)
-        json = JSON.parse(r.body)
-        render json: json['data']['results']
-        # json['data']['results'].map { |comic| comic['title']}
-    end
+    # def api_comics
+    #     r = RestClient.get(fetch_url)
+    #     json = JSON.parse(r.body)
+    #     render json: json['data']['results']
+    #     # json['data']['results'].map { |comic| comic['title']}
+    # end
 
 
     def api_comics_search
@@ -31,7 +31,7 @@ class ComicsController < ApplicationController
 
 
     def show
-        render json: find_comic, status: :ok, serializer: ComicPostsSerializer
+        render json: find_comic, status: :ok, include: ['posts', 'posts.user']
     end
 
     private

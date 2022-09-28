@@ -5,9 +5,9 @@ class User < ApplicationRecord
     has_secure_password
 
     # validations 
-    # validates :email, :username, presence: true, uniqueness: true
-    # validates :username, length: { in: 1..30 }
-    # validates :password, length: { in: 1..20 }
+    validates :email, :username, presence: true, uniqueness: true
+    validates :username, length: { in: 1..30 }
+    validates :password, length: { in: 1..20 }
     
     # has_one_attached :avatar
     # def avatar_url

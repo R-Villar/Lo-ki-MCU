@@ -38,7 +38,7 @@ export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser})
 			.then((res) => res.json())
 			.then((data) => setDisplayComic(data));
 	}, [id, dBFetch]);
-    
+
     // submit new comment
     const newComment = (e) => {
 		e.preventDefault();
@@ -58,7 +58,7 @@ export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser})
         .then( res => {
 			if(res.ok){
 				res.json().then(
-					updateDbComics(infoToSend),
+					setDisplayComic(infoToSend),
 					dBFetch())
 			}else {
 				res.json().then((json) => setErrors(json.errors))
@@ -67,7 +67,8 @@ export default function ComicDiscussion({ updateDbComics, dBFetch, currentUser})
 		console.log(errors)
 	};
 
-    const displayComments = posts?.map((post) => {        
+    const displayComments = posts?.map((post) => {    
+
         return (
             <div key={post.id}>
                 <EditPost

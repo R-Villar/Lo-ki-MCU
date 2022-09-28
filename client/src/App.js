@@ -34,7 +34,7 @@ function App() {
 			}else {res.json().then((json) => setErrors(json.errors))}
 		});
 	}, []);
-
+	// console.log(currentUser)
 	// adds comic to discussions page.
 	const updateDbComics = (addedComic) => {
 		setDbComicData([...dbComicData, addedComic])
