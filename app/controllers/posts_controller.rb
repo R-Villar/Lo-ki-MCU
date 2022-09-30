@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-    
+
     #GET '/posts'
     def index
         render json: Post.all, status: :ok

@@ -5,23 +5,27 @@ import Home from './components/Home';
 import Signup from './components/register/Signup';
 import Login from './components/register/Login';
 import NavBar from './components/NavBar';
-import ComicPage from './components/ComicPage';
+import ComicPageForm from './components/ComicPageForm';
 import DiscussionsPage from './components/discussions/DiscussionsPage';
 import ComicDiscussion from './components/discussions/ComicDiscussion';
 
 function App() {
-	const [comicData, SetComicData] = useState([]);
+	const [apiComicData, SetApiComicData] = useState([]);
 	const [currentUser, setCurrentUser] = useState('');
 	const [errors, setErrors] = useState([])
 	const [selectedComic, setSelectedComic] = useState({});
 	const [ dbComicData, setDbComicData ] = useState([])
+	const [userPost, setUserPost ] = useState([])
+	// const [ showDiscussionComic, setShowDiscussionComic ] = useState([{}])
+	const [ change, setChange ] =useState(false)
 	const [ search, setSearch ] = useState('thor')
 
+	
 	// search api
 	useEffect(() => {
 		fetch(`/api-search/${search}`)
 			.then((res) => res.json())
-			.then((data) => SetComicData(data));
+			.then((data) => SetApiComicData(data));
 	}, [search]);
 
 	// fetch user data
@@ -41,19 +45,40 @@ function App() {
 	}
 
 	// fetch data from DB
-	const dBFetch = () => {
-		fetch(`/comics`)
-			.then((res) => res.json())
-			.then((data) => setDbComicData(data));
-	}
-
 	useEffect(() => {
-		dBFetch()
-	}, []);
+		fetch(`/comics`)
+			.then((res) => {
+				if(res.ok) {
+					res.json().then(setDbComicData)
+				}else {
+					res.json().then((json) => setErrors(json.errors))
+				}
+			})
+	}, [change]);
+
+
+	 // new posts
+	 const newPosts = (newPost) => {
+        setUserPost([...userPost, newPost])
+    }
+
+	// remove post
+    const deletePosts = (postToDelete) => {
+        const updatedPosts = userPost.filter((post) => post.id !== postToDelete.id)
+        setUserPost(updatedPosts)
+    }
+
+	// update post
+	const updatePost = (postToUpdate) => {
+		const updatedPost = userPost.map((post) => 
+		post.id === postToUpdate.id ? postToUpdate : post
+		)
+		setUserPost(updatedPost)
+	}
 
   	return (
 		<div className='App'>
-			<NavBar currentUser={currentUser} setSearch={setSearch} setCurrentUser={setCurrentUser} />
+			<NavBar currentUser={currentUser} setSearch={setSearch} setCurrentUser={setCurrentUser}/>
 			<div>
 				{currentUser? <h4>Welcome, {currentUser.username}</h4> : null}
 			</div>
@@ -61,7 +86,7 @@ function App() {
 				<Route exact path='/'>
 					<Home
 						setSelectedComic={setSelectedComic}
-						comicData={comicData}
+						apiComicData={apiComicData}
 					/>
 				</Route>
 				<Route path='/signup'>
@@ -71,14 +96,14 @@ function App() {
 					<Login setCurrentUser={setCurrentUser} />
 				</Route>
 				<Route path='/comic-page'>
-					<ComicPage
-						dBFetch={dBFetch}
+					<ComicPageForm
+						change={change}
+						setChange={setChange}
 						updateDbComics={updateDbComics}
 						currentUser={currentUser}
 						selectedComic={selectedComic}
 					/>
 				</Route>
-
 				<Route path='/discussions'>
 					<DiscussionsPage
 						dbComicData={dbComicData}
@@ -86,7 +111,12 @@ function App() {
 				</Route>
 				<Route path='/comics/:id'>
 					<ComicDiscussion
+						userPost={userPost}
+						newPosts={newPosts}
+						setUserPost={setUserPost}
 						currentUser={currentUser}
+						deletePosts={deletePosts}
+						updatePost={updatePost}
 					/>
 				</Route>
 			</Switch>

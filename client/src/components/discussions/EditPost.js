@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
-export default function EditPost({post, currentUser, setDisplayComic }) {
+export default function EditPost({post, currentUser, setDisplayComic, deletePosts, updatePost, setUpdate, update }) {
 
     // console.log(selectedDiscussionComic)
     const [likes, setLikes ] = useState( post.like )
@@ -45,13 +45,10 @@ export default function EditPost({post, currentUser, setDisplayComic }) {
     // }
 
 
-    // disable the buttons if the user did not created those posts
-    const disableButton = currentUser.id !== post.user.id
-    // console.log(currentUser.id)
-    // console.log(likes)
-    // console.log(formData)
-    // edit post 
+   
 
+ 
+    // edit post 
     const openEdit = (e) => {
         e.preventDefault()
         setIsEditing((isEditing) => !isEditing);
@@ -69,24 +66,33 @@ export default function EditPost({post, currentUser, setDisplayComic }) {
         .then((response) => {
             if(response.ok){
                 response.json().then(updatedComment => {
-                    setDisplayComic(updatedComment)
+                    updatePost(updatedComment)
+                    setUpdate(!update)
                 }) 
             }else {
                 response.json().then((json) => setErrors(json.errors))
             }
         })
         // close form when save button is pressed
-        // setIsEditing((isEditing) => !isEditing);
+        setIsEditing((isEditing) => !isEditing);
     }
 
     // user deletes their post
     const deleteComment = (e) => {
         e.preventDefault()
-        // console.log(post.id)
+       
         fetch(`/posts/${post.id}`, {
             method: "DELETE",
         })
+        .then((res) => res)
+        .then(() => {
+            deletePosts(post)
+            setUpdate(!update)
+        })
     }
+
+    // disable the buttons if the user did not created those posts
+    const disableButton = currentUser.id !== post.user.id
 
     return (
         <div>
@@ -95,8 +101,12 @@ export default function EditPost({post, currentUser, setDisplayComic }) {
                     <p>User: {post.user.username}</p>
                     <p>{formData.comment}</p>
                     <button onClick={handleLikeClick}> {likes} likes</button>
-                    <button disabled={disableButton} onClick={openEdit}>edit comment</button>
-                    <button disabled={disableButton} onClick={deleteComment}>delete comment</button>
+                    <button 
+                    disabled={disableButton}
+                     onClick={openEdit}>edit comment</button>
+                    <button 
+                    disabled={disableButton}
+                     onClick={deleteComment}>delete comment</button>
                 </div>
             ):(
                 <form>

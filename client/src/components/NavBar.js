@@ -34,13 +34,12 @@ export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 			<NavLink to='/'>Home</NavLink>
 			{!currentUser? (<NavLink to='/signup'>signup</NavLink>): null}
 			<NavLink to='/login'>Login</NavLink>
-			{/* <NavLink to='/testfornow'>Test</NavLink> */}
-			<NavLink to='/discussions'>Discussions</NavLink>
+			{currentUser? (<NavLink to='/discussions'>Discussions</NavLink>): null}
 			<form onClick={handleSubmit}>
 				<input onChange={handleChange}/>
 				<input type='submit'/>
-			</form>
-			<button onClick={handleLogout}>log out</button>
+			</form>	
+			{currentUser? (<button onClick={handleLogout}>log out</button>): null}
 		</div>
 	);
 }
