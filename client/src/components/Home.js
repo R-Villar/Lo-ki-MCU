@@ -2,10 +2,11 @@ import { Link } from "react-router-dom"
 
 const image_size = "portrait_uncanny";
 
-export default function Home({comicData, setSelectedComic}) {
+export default function Home({apiComicData, setSelectedComic}) {
 	// console.log(comicData);
 
-	const displayComics = comicData.map((comic) => {
+	// displays comics from api
+	const displayComics = apiComicData.map((comic) => {
 		// get comic data
 		function onComicClick() {
 			setSelectedComic(comic);
@@ -21,7 +22,7 @@ export default function Home({comicData, setSelectedComic}) {
 				<p>{comic.format}</p>
 				<p>{comic.issueNumber}</p>
 				<Link to='/comic-page' onClick={onComicClick}>
-					Add a comment
+					Start or Join Conversation
 				</Link>
 			</div>
 		);

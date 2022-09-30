@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 
 
 const image_size = "portrait_uncanny";
-export default function ComicPage({selectedComic, currentUser, updateDbComics, dBFetch}) {
+export default function ComicPageForm({ change, setChange, selectedComic, currentUser, updateDbComics}) {
 	const [errors, setErrors] = useState([])
 	// comment form
 	const [formData, setFormData] = useState({
@@ -45,8 +45,6 @@ export default function ComicPage({selectedComic, currentUser, updateDbComics, d
 			...comicData,
 		};
 
-		console.log(infoToSend)
-
 		fetch("/posts", {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
@@ -54,9 +52,9 @@ export default function ComicPage({selectedComic, currentUser, updateDbComics, d
 		})
         .then( res => {
 			if(res.ok){
-				res.json().then(
-					updateDbComics(infoToSend),
-					dBFetch())
+				res.json().then(post => 
+					updateDbComics(post), 
+					setChange(!change))
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
@@ -144,6 +142,7 @@ export default function ComicPage({selectedComic, currentUser, updateDbComics, d
 					}}
 				/>
 				<Stack direction='row' justifyContent='flex-end' spacing={2}>
+					{/* needs to link somewhere else */}
 					<Button
 						type='submit'
 						disabled={disableCommentButton}

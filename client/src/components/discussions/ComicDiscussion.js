@@ -7,14 +7,16 @@ import TextField from "@mui/material/TextField";
 import {useParams} from "react-router-dom";
 import EditPost from "./EditPost"
 
-export default function ComicDiscussion({ currentUser}) {
-   
-    const [formData, setFormData] = useState({like: 0});
-    const [errors, setErrors] = useState([])
+export default function ComicDiscussion({ currentUser, setUserPost, newPosts, userPost, deletePosts, updatePost}) {
+    const {id} = useParams();
     const [ displayComic, setDisplayComic ] = useState([])
+    const [formData, setFormData] = useState({like: 0});
+    const [ update, setUpdate ] = useState(false)
+    const [errors, setErrors] = useState([])
     const {title, thumbnail, format, number_of_posts, posts} = displayComic
-    const [userPost, setUserPost ] = useState()
-    let {id} = useParams();
+    setUserPost(posts)
+    // const [userPost, setUserPost ] = useState()
+
 
     // disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
@@ -27,13 +29,12 @@ export default function ComicDiscussion({ currentUser}) {
 		}));
 	};
 
-
     // individual comic fetch
     useEffect(() => {
 		fetch(`/comics/${id}`)
 			.then((res) => res.json())
 			.then((comicsData) => setDisplayComic(comicsData));
-	}, [id, userPost, displayComic]);
+	}, [id, setUserPost,   update]);
 
     // submit new comment
     const newComment = (e) => {
@@ -44,8 +45,6 @@ export default function ComicDiscussion({ currentUser}) {
 			...displayComic
 		};
 
-		console.log(infoToSend)
-
 		fetch("/posts", {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
@@ -53,26 +52,25 @@ export default function ComicDiscussion({ currentUser}) {
 		})
         .then( res => {
 			if(res.ok){
-				res.json().then(
-					newPosts(infoToSend))
+				res.json().then(() =>
+					newPosts(infoToSend),
+                    setUpdate(!update))
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
 		})
 	};
 
-    // new posts
-    const newPosts = (newPost) => {
-        setUserPost([...posts, newPost])
-    }
 
-
-
-    const displayComments = posts?.map((post) => {
+    const displayComments = userPost?.map((post) => {
 
         return (
             <div key={post.id}>
                 <EditPost
+                    updatePost={updatePost}
+                    deletePosts={deletePosts}
+                    setUpdate={setUpdate}
+                    update={update}
                     setDisplayComic={setDisplayComic}
                     currentUser={currentUser}
                     post={post}
