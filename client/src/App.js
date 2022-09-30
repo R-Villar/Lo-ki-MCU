@@ -12,14 +12,13 @@ import ComicDiscussion from './components/discussions/ComicDiscussion';
 function App() {
 	const [apiComicData, SetApiComicData] = useState([]);
 	const [currentUser, setCurrentUser] = useState('');
+	const [ change, setChange ] =useState(false)
 	const [errors, setErrors] = useState([])
 	const [selectedComic, setSelectedComic] = useState({});
 	const [ dbComicData, setDbComicData ] = useState([])
 	const [userPost, setUserPost ] = useState([])
-	// const [ showDiscussionComic, setShowDiscussionComic ] = useState([{}])
-	const [ change, setChange ] =useState(false)
 	const [ search, setSearch ] = useState('thor')
-
+	const [ test, setTest ] = useState([])
 	
 	// search api
 	useEffect(() => {
@@ -38,7 +37,7 @@ function App() {
 			}else {res.json().then((json) => setErrors(json.errors))}
 		});
 	}, []);
-
+	// console.log(errors)
 	// adds comic to discussions page.
 	const updateDbComics = (addedComic) => {
 		setDbComicData([...dbComicData, addedComic])
@@ -57,16 +56,18 @@ function App() {
 	}, [change]);
 
 
-	 // new posts
-	 const newPosts = (newPost) => {
+	// new posts
+	const newPosts = (newPost) => {
         setUserPost([...userPost, newPost])
     }
 
 	// remove post
     const deletePosts = (postToDelete) => {
         const updatedPosts = userPost.filter((post) => post.id !== postToDelete.id)
-        setUserPost(updatedPosts)
+		setUserPost(updatedPosts)
     }
+
+	console.log(userPost)
 
 	// update post
 	const updatePost = (postToUpdate) => {

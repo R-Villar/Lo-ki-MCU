@@ -14,9 +14,6 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
     const [ update, setUpdate ] = useState(false)
     const [errors, setErrors] = useState([])
     const {title, thumbnail, format, number_of_posts, posts} = displayComic
-    setUserPost(posts)
-    // const [userPost, setUserPost ] = useState()
-
 
     // disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
@@ -33,8 +30,12 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
     useEffect(() => {
 		fetch(`/comics/${id}`)
 			.then((res) => res.json())
-			.then((comicsData) => setDisplayComic(comicsData));
-	}, [id, setUserPost,   update]);
+			.then((comicsData) => {
+                setDisplayComic(comicsData)
+                setUserPost(comicsData.posts)
+            })
+            ;
+	}, [id]);
 
     // submit new comment
     const newComment = (e) => {
@@ -53,13 +54,15 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
         .then( res => {
 			if(res.ok){
 				res.json().then((comment) =>
-                    newPosts(comment), setUpdate(!update))
+                    newPosts(comment),
+                    //  setUpdate(!update)
+                     )
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
 		})
 	};
-
+    console.log(userPost)
 
     const displayComments = userPost?.map((post) => {
 

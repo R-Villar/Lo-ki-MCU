@@ -67,7 +67,7 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
             if(response.ok){
                 response.json().then(updatedComment => {
                     updatePost(updatedComment)
-                    setUpdate(!update)
+                    // setUpdate(!update)
                 }) 
             }else {
                 response.json().then((json) => setErrors(json.errors))
@@ -80,15 +80,11 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
     // user deletes their post
     const deleteComment = (e) => {
         e.preventDefault()
-       
         fetch(`/posts/${post.id}`, {
             method: "DELETE",
         })
-        .then((res) => res)
-        .then(() => {
-            deletePosts(post)
-            setUpdate(!update)
-        })
+        deletePosts(post)
+
     }
 
     // disable the buttons if the user did not created those posts
