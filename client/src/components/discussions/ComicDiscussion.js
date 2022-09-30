@@ -52,9 +52,8 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
 		})
         .then( res => {
 			if(res.ok){
-				res.json().then(() =>
-					newPosts(infoToSend),
-                    setUpdate(!update))
+				res.json().then((comment) =>
+                    newPosts(comment), setUpdate(!update))
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
