@@ -8,7 +8,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
+import Zoom from '@mui/material/Zoom';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
 
 export default function EditPost({post, currentUser, setDisplayComic, deletePosts, updatePost, setUpdate, update }) {
 
@@ -114,26 +117,32 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
                         </Typography>
                     </Stack>
                     <Typography>{post.comment}</Typography>
-                    <Button 
-                        size="small"
-                        onClick={handleLikeClick}
-                    >
-                        {likes} <FavoriteIcon />
-                    </Button>
-                    <Button
-                        size="small" 
-                        disabled={disableButton}
-                        onClick={openEdit}
-                    > 
-                       <EditIcon />
-                    </Button>
-                    <Button 
-                        size="small"
-                        disabled={disableButton}
-                        onClick={deleteComment}
-                    >
-                        <DeleteIcon />
-                    </Button>
+                    <Tooltip TransitionComponent={Zoom} arrow title="Like">
+                        <IconButton
+                            size="small"
+                            onClick={handleLikeClick}
+                        >
+                            {likes} <FavoriteIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip TransitionComponent={Zoom} arrow title="Edit">
+                        <IconButton
+                            size="small" 
+                            disabled={disableButton}
+                            onClick={openEdit}
+                        > 
+                        <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip TransitionComponent={Zoom} arrow title="Delete">
+                        <IconButton 
+                            size="small"
+                            disabled={disableButton}
+                            onClick={deleteComment}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Card>
             ):(
                 <Card sx={{m: 1}}>

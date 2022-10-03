@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-import Slide from '@mui/material/Slide';
+
 
 
 export default function NavBar({setCurrentUser, setSearch, currentUser}) {
@@ -65,7 +65,7 @@ export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 	}
 
 	return (
-		<AppBar  position='static'>
+		<AppBar position='sticky'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
 					<LocalLibraryIcon ontSize='large'
@@ -227,8 +227,9 @@ export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 						<input onChange={handleChange}/>
 						<input type='submit'/>
 					</form>	
-					</Toolbar>
-				</Container>
+				</Toolbar>
+			</Container>
+
 		</AppBar>
 	);
 }
