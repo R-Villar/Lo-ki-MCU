@@ -16,9 +16,8 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
 
 
-export default function NavBar({setCurrentUser, setSearch, currentUser}) {
+export default function NavBar({setCurrentUser, currentUser}) {
 	const history = useHistory();
-	const [formData, setFormData] = useState('');
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const pages = currentUser ? ["home", "Discussions"] : ["home"] 
@@ -50,19 +49,6 @@ export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 			}
 		});
 	};
-
-	const handleSubmit = (e) => {
-		e.preventDefault()
-		if(formData === ''){
-
-		}else {
-			setSearch(formData)
-		}
-	}
-
-	const handleChange = (e) => {
-		setFormData(e.target.value);
-	}
 
 	return (
 		<AppBar position='sticky'>
@@ -222,11 +208,6 @@ export default function NavBar({setCurrentUser, setSearch, currentUser}) {
 							))}
 						</Menu>
 					</Box>
-					{/* search bar */}
-					<form onClick={handleSubmit}>
-						<input onChange={handleChange}/>
-						<input type='submit'/>
-					</form>	
 				</Toolbar>
 			</Container>
 

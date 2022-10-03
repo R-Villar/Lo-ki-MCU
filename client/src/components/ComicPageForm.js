@@ -19,8 +19,6 @@ export default function ComicPageForm({ change, setChange, selectedComic, curren
 	// disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
 
-	console.log(selectedComic);
-
 	const userInput = (e) => {
 		setFormData((formData) => ({
 			...formData,
@@ -34,8 +32,6 @@ export default function ComicPageForm({ change, setChange, selectedComic, curren
 		format: selectedComic.format,
 		pageCount: selectedComic.pageCount,
 	};
-
-	console.log(selectedComic)
 
 	const newComment = (e) => {
 		e.preventDefault();

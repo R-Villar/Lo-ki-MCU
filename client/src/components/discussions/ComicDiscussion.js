@@ -10,11 +10,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import {CardActionArea} from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 
 export default function ComicDiscussion({ currentUser, setUserPost, newPosts, userPost, deletePosts, updatePost}) {
     const {id} = useParams();
+    const [isLoading, setIsLoading] = useState(true);
     const [ displayComic, setDisplayComic ] = useState([])
     const [formData, setFormData] = useState({like: 0});
     const [ update, setUpdate ] = useState(false)
@@ -68,7 +71,13 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
 			}
 		})
 	};
-    console.log(userPost)
+
+
+    useEffect(() => {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+    }, []);
 
     const displayComments = userPost?.map((post) => {
 
@@ -86,6 +95,10 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
             </Box>
         )
     })
+
+    if (isLoading) {
+        return <div><CircularProgress color="secondary" /></div> 
+    }
  
     return (
         <div>
