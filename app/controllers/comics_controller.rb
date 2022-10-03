@@ -22,7 +22,7 @@ class ComicsController < ApplicationController
         apiPrivateKey = ENV['MARVEL_PRIVATE_KEY']
         newString = ts + apiPrivateKey + apiPublicKey
         hash = Digest::MD5.hexdigest(newString)
-        url = "#{baseUrl}?ts=#{ts}&apikey=#{apiPublicKey}&hash=#{hash}&titleStartsWith=#{params[:value]}" #&titleStartsWith=#{"THOR"}
+        url = "#{baseUrl}?ts=#{ts}&apikey=#{apiPublicKey}&hash=#{hash}&titleStartsWith=#{params[:value]}" #&titleStartsWith=#{params[:value]}"
         r = RestClient.get(url)
         json = JSON.parse(r.body)
         render json: json['data']['results']

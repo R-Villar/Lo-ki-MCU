@@ -10,7 +10,6 @@ import CardMedia from '@mui/material/CardMedia';
 
 const image_size = "portrait_uncanny";
 export default function Home({apiComicData, setSelectedComic}) {
-	// console.log(comicData);
 
 	// displays comics from api
 	const displayComics = apiComicData.map((comic) => {
@@ -34,9 +33,16 @@ export default function Home({apiComicData, setSelectedComic}) {
 					
 						<Typography>{comic.format}</Typography>
 						<Typography>{comic.issueNumber}</Typography>
-						<Button  variant="contained" href='/comic-page' onClick={onComicClick}>
+						<Link
+							to='/comic-page' 
+							onClick={onComicClick}>
 							Start or Join Conversation
-						</Button>
+						</Link>
+						{/* <Button  variant="contained"
+							href='/comic-page' 
+							onClick={onComicClick}>
+							Start or Join Conversation
+						</Button> */}
 					</CardContent>
 				</Card>
 			</Box>

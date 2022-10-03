@@ -1,4 +1,14 @@
+import { Card } from '@mui/material';
 import { useState } from 'react'
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button"
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 export default function EditPost({post, currentUser, setDisplayComic, deletePosts, updatePost, setUpdate, update }) {
 
@@ -6,7 +16,7 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
     const [likes, setLikes ] = useState( post.like )
     const [isClicked, setIsClicked] = useState(false);
     const [isEditing, setIsEditing] = useState(true);
-    const [formData, setFormData] = useState({ comment: post.comment });
+    const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState([]);
 
     const handleCommentChange = (e) => {
@@ -16,6 +26,8 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
             [e.target.name]: e.target.value,
         }));
     }
+
+    console.log(formData)
 
     // like button clicked
     const handleLikeClick = () => {
@@ -28,26 +40,23 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
     };
 
     // const handleUpdateLikes = () => {
-    //     fetch(`/posts/${post.id}`,  {
-    //         method: "PATCH",
-	// 		headers: {"Content-type": "application/json"},
-	// 		body: JSON.stringify(likes)
-    //     })
-    //     .then((response) => {
-    //         if(response.ok){
-    //             response.json().then(updatedLikes => {
-    //                 updateDbComics(updatedLikes)
-    //             }) 
-    //         }else {
-    //             response.json().then((json) => setErrors(json.errors))
-    //         }
-    //     })
+
+        // fetch(`/posts/${post.id}`,  {
+        //     method: "PATCH",
+        //     headers: {"Content-type": "application/json"},
+        //     body: JSON.stringify(likes)
+        // })
+        // .then((response) => {
+        //     if(response.ok){
+        //         response.json().then(updatedLikes => {
+        //             updatePost(updatedLikes)
+        //         }) 
+        //     }else {
+        //         response.json().then((json) => setErrors(json.errors))
+        //     }
+        // })
     // }
 
-
-   
-
- 
     // edit post 
     const openEdit = (e) => {
         e.preventDefault()
@@ -67,7 +76,6 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
             if(response.ok){
                 response.json().then(updatedComment => {
                     updatePost(updatedComment)
-                    // setUpdate(!update)
                 }) 
             }else {
                 response.json().then((json) => setErrors(json.errors))
@@ -93,24 +101,64 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
     return (
         <div>
             {isEditing? (
-                <div>
-                    <p>User: {post.user.username}</p>
-                    <p>{formData.comment}</p>
-                    <button onClick={handleLikeClick}> {likes} likes</button>
-                    <button 
-                    disabled={disableButton}
-                     onClick={openEdit}>edit comment</button>
-                    <button 
-                    disabled={disableButton}
-                     onClick={deleteComment}>delete comment</button>
-                </div>
+                 <Card sx={{m: 1}}>
+                    <Stack  sx={{m: 1}} direction="row" spacing={1}>
+                        <Avatar>{post.user.username[0]}</Avatar>
+                        <Typography 
+                            variant="button"
+                            display="block"
+                            mt={1}
+                            sx={{fontWeight: 700}}
+                        >
+                            {post.user.username}
+                        </Typography>
+                    </Stack>
+                    <Typography>{post.comment}</Typography>
+                    <Button 
+                        size="small"
+                        onClick={handleLikeClick}
+                    >
+                        {likes} <FavoriteIcon />
+                    </Button>
+                    <Button
+                        size="small" 
+                        disabled={disableButton}
+                        onClick={openEdit}
+                    > 
+                       <EditIcon />
+                    </Button>
+                    <Button 
+                        size="small"
+                        disabled={disableButton}
+                        onClick={deleteComment}
+                    >
+                        <DeleteIcon />
+                    </Button>
+                </Card>
             ):(
-                <form>
-                    <input onChange={handleCommentChange} name='comment'
+                <Card sx={{m: 1}}>
+                    <Stack  sx={{m: 1}} direction="row" spacing={1}>
+                        <Avatar>{post.user.username[0]}</Avatar>
+                        <Typography 
+                            variant="button"
+                            display="block"
+                            mt={1}
+                            sx={{fontWeight: 700}}
+                        >
+                            {post.user.username}
+                        </Typography>
+                    </Stack>
+                    <TextField
+                        variant='standard'
+                        rows={3}
+                        multiline
+                        onChange={handleCommentChange} 
+                        name='comment'
                         defaultValue={post.comment}
                     />
-                    <button onClick={saveEditComment} type='submit'>save</button>
-                </form>
+    
+                    <Button onClick={saveEditComment} type='submit'>save</Button>
+                </Card>
             )}
         </div>
     )

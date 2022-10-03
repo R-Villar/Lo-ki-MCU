@@ -15,9 +15,7 @@ const image_size = "portrait_uncanny";
 export default function ComicPageForm({ change, setChange, selectedComic, currentUser, updateDbComics}) {
 	const [errors, setErrors] = useState([])
 	// comment form
-	const [formData, setFormData] = useState({
-		like: 0
-	});
+	const [formData, setFormData] = useState({ like: 0 });
 	// disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
 
@@ -37,6 +35,8 @@ export default function ComicPageForm({ change, setChange, selectedComic, curren
 		pageCount: selectedComic.pageCount,
 	};
 
+	console.log(selectedComic)
+
 	const newComment = (e) => {
 		e.preventDefault();
 
@@ -54,7 +54,8 @@ export default function ComicPageForm({ change, setChange, selectedComic, curren
 			if(res.ok){
 				res.json().then(post => 
 					updateDbComics(post), 
-					setChange(!change))
+					setChange(!change)
+					)
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
