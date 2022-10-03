@@ -68,7 +68,7 @@ function App(props) {
 	const [ search, setSearch ] = useState('thor')
 	const history = useHistory();
 
-	console.log(errors)
+
 	// search api
 	useEffect(() => {
 		fetch(`/api-search/${search}`)
@@ -109,7 +109,7 @@ function App(props) {
 				}
 			})
 		}
-	}, [currentUser])
+	}, [])
 
 	// adds comic to discussions page.
 	const updateDbComics = (addedComic) => {
@@ -137,7 +137,8 @@ function App(props) {
 
   	return (
 		<div className='App'>
-			<NavBar currentUser={currentUser} setSearch={setSearch} setCurrentUser={setCurrentUser}/>
+			<NavBar currentUser={currentUser} 
+				setCurrentUser={setCurrentUser}/>
 			<div>
 				{currentUser? <h4>Welcome, {currentUser.username}</h4> : null}
 				<Toolbar id="back-to-top-anchor" />
@@ -146,6 +147,7 @@ function App(props) {
 			<Switch>
 				<Route exact path='/home'>
 					<Home
+						setSearch={setSearch}
 						setSelectedComic={setSelectedComic}
 						apiComicData={apiComicData}
 					/>

@@ -6,10 +6,10 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
-
+import SearchBar from "./SearchBar";
 
 const image_size = "portrait_uncanny";
-export default function Home({apiComicData, setSelectedComic}) {
+export default function Home({apiComicData, setSelectedComic, setSearch}) {
 
 	// displays comics from api
 	const displayComics = apiComicData.map((comic) => {
@@ -50,21 +50,24 @@ export default function Home({apiComicData, setSelectedComic}) {
 	});
 
 	return (
-		<Box sx={{
-			p: 2,
-			display: "grid",
-			flexWrap: "wrap",
-			gridTemplateColumns: {
-				sm: ".5fr",
-				md: ".5fr .5fr",
-				lg: ".5fr .5fr .5fr",
-				xl: ".5fr .5fr .5fr .5fr"
-			},
-			"& > :not(style)": {
-				m: 2,
-			},
-		}}>
-			{displayComics}
-		</Box>
+		<>
+			<SearchBar setSearch={setSearch} />
+			<Box sx={{
+				p: 2,
+				display: "grid",
+				flexWrap: "wrap",
+				gridTemplateColumns: {
+					sm: ".5fr",
+					md: ".5fr .5fr",
+					lg: ".5fr .5fr .5fr",
+					xl: ".5fr .5fr .5fr .5fr"
+				},
+				"& > :not(style)": {
+					m: 2,
+				},
+			}}>
+				{displayComics}
+			</Box>
+		</>
 	);
 }

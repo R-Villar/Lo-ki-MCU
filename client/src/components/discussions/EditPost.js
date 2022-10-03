@@ -15,7 +15,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 export default function EditPost({post, currentUser, setDisplayComic, deletePosts, updatePost, setUpdate, update }) {
 
-    // console.log(selectedDiscussionComic)
     const [likes, setLikes ] = useState( post.like )
     const [isClicked, setIsClicked] = useState(false);
     const [isEditing, setIsEditing] = useState(true);
@@ -29,8 +28,6 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
             [e.target.name]: e.target.value,
         }));
     }
-
-    console.log(formData)
 
     // like button clicked
     const handleLikeClick = () => {
