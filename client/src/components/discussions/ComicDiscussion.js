@@ -6,6 +6,12 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useParams} from "react-router-dom";
 import EditPost from "./EditPost"
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import {CardActionArea} from "@mui/material";
+
+
 
 export default function ComicDiscussion({ currentUser, setUserPost, newPosts, userPost, deletePosts, updatePost}) {
     const {id} = useParams();
@@ -13,10 +19,7 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
     const [formData, setFormData] = useState({like: 0});
     const [ update, setUpdate ] = useState(false)
     const [errors, setErrors] = useState([])
-    const {title, thumbnail, format, number_of_posts, posts} = displayComic
-    setUserPost(posts)
-    // const [userPost, setUserPost ] = useState()
-
+    const {title, thumbnail, format, number_of_posts} = displayComic
 
     // disable send comment if user is not logged in
 	const disableCommentButton  = !currentUser
@@ -33,8 +36,12 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
     useEffect(() => {
 		fetch(`/comics/${id}`)
 			.then((res) => res.json())
-			.then((comicsData) => setDisplayComic(comicsData));
-	}, [id, setUserPost,   update]);
+			.then((comicsData) => {
+                setDisplayComic(comicsData)
+                setUserPost(comicsData.posts)
+            })
+            ;
+	}, [id, setUserPost]);
 
     // submit new comment
     const newComment = (e) => {
@@ -52,41 +59,74 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
 		})
         .then( res => {
 			if(res.ok){
-				res.json().then(() =>
-					newPosts(infoToSend),
-                    setUpdate(!update))
+				res.json().then((comment) =>
+                    newPosts(comment),
+                    //  setUpdate(!update)
+                     )
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
 		})
 	};
-
+    console.log(userPost)
 
     const displayComments = userPost?.map((post) => {
 
         return (
-            <div key={post.id}>
-                <EditPost
-                    updatePost={updatePost}
-                    deletePosts={deletePosts}
-                    setUpdate={setUpdate}
-                    update={update}
-                    setDisplayComic={setDisplayComic}
-                    currentUser={currentUser}
-                    post={post}
-                />
-            </div>
+            <Box key={post.id}>
+                    <EditPost
+                        updatePost={updatePost}
+                        deletePosts={deletePosts}
+                        setUpdate={setUpdate}
+                        update={update}
+                        setDisplayComic={setDisplayComic}
+                        currentUser={currentUser}
+                        post={post}
+                    />
+            </Box>
         )
     })
  
     return (
         <div>
-            <div key={displayComic.id}>
-                <h4>{title}</h4>
-                <img src={thumbnail} alt={title} />
-                <p>format {format}</p>
-                <p> number of posts {number_of_posts}</p>
-            </div>
+            <Box justifyContent='center' key={displayComic.id}
+				sx={{
+					p: 1,
+					display: "center",
+					flexWrap: "wrap",
+					gridTemplateColumns: {
+						md: "1fr",
+					},
+					"& > :not(style)": {
+						m: 3,
+					},
+				}}
+            >
+                <Card elevation={3} sx={{maxWidth: 400}}>
+                    <CardActionArea>
+                        <Typography gutterBottom variant='h5' component='div'>
+                            {title}
+                        </Typography>
+                        <CardMedia component='img'
+							height='600'
+                            src={thumbnail}
+                            alt={title}
+                        />
+                        <CardContent>
+                            <Typography
+                                gutterBottom
+                                variant='h4'
+                                component='div'
+                            >
+                                format {format}
+                            </Typography>
+                            <Typography> 
+                                number of posts {number_of_posts}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            </Box>
                 {/* new comment form */}
                 <Box
                     onSubmit={newComment}
@@ -113,19 +153,22 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
                         multiline
                         rows={6}
                         variant='filled'
+                        color='primary'
                         sx={{
                             display: "flex",
                             flexDirection: "row",
                             flexWrap: "wrap",
                         }}
                     />
-                    <Stack direction='row' justifyContent='flex-end' spacing={2}>
+                    <Stack direction='row' 
+                        justifyContent='flex-end'
+                        spacing={2} sx={{m: .5}}>
                         <Button
                             type='submit'
                             disabled={disableCommentButton}
-                            variant='contained'
+                            variant='contained'    
                         >
-                            Send
+                            Submit
                         </Button>
                     </Stack> 
                 </Box>

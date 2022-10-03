@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-
+import Alert from '@mui/material/Alert';
 
 
 
@@ -12,14 +12,27 @@ export default function Signup({setCurrentUser}) {
 	// const history = useHistory();
 	const [userFormData, setUserFormData] = useState({});
 	const [errors, setErrors] = useState([]);
+	const [emailError, setEmailError] = useState(false);
+
+	// validating email
+	const isValidEmail = (email) => {
+		return /\S+@\S+\.\S+/.test(email);
+	}
+
 	// form data from user input 
 	const handleChange = (e) => {
 		setUserFormData((formData) => ({
 			...formData,
 			[e.target.name]: e.target.value,
 		}));
+		if (!isValidEmail(userFormData.email)) {
+			setEmailError('Email is invalid')
+		}else {
+			setEmailError(false)
+		}
 	};
 
+	
 	// adding avatars to users later on
 	// const handleAvatarChange = (e) => {
 	//     setUserFormData((formData) => ({
@@ -31,25 +44,28 @@ export default function Signup({setCurrentUser}) {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		console.log(userFormData.password)
-		fetch("/users", {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify(userFormData),
-		})
-		.then( res => {
-			if(res.ok){
-				res.json().then(user => {
-					setCurrentUser(user);
-				})
-			}else {
-				res.json().then((json) => setErrors(json.errors))
-			}
-		})
+		if(userFormData.password !== userFormData.passwordConfirmation){
+			alert("passwords don't match")
+		}else {
+			fetch("/users", {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify(userFormData),
+			})
+			.then( res => {
+				if(res.ok){
+					res.json().then(user => {
+						setCurrentUser(user);
+					})
+				}else {
+					res.json().then((json) => setErrors(json.errors))
+				}
+			})
+		}
 	};
 
-	// console.log(userFormData);
-	// console.log(errors);
+	console.log(userFormData);
+
 	return (
 		<Box
 			onSubmit={onSubmit}
@@ -82,9 +98,11 @@ export default function Signup({setCurrentUser}) {
 						type='email'
 						label='email'
 						name='email'
+						error={emailError? true : false }
 						// value={formData.email}
 						onChange={handleChange}
 					/>
+					{/* {emailError && <h5>{emailError}</h5>} */}
 					<TextField
 						id='margin-normal'
 						margin='normal'
@@ -95,6 +113,15 @@ export default function Signup({setCurrentUser}) {
 						// value={formData.password}
 						onChange={handleChange}
 					/>
+					<TextField
+                    id='margin-normal'
+                    margin='normal'
+                    required
+                    type='password'
+                    label='Confirm Password'
+                    name='passwordConfirmation'
+                    onChange={handleChange}
+                />
 					{/* <TextField
 						id='margin-normal'
 						margin='normal'
@@ -125,6 +152,7 @@ export default function Signup({setCurrentUser}) {
 							type='submit'
 							value='Signup'
 							variant='contained'
+							onClick={onSubmit}
 						>
 							Sign Up
 						</Button>
@@ -141,6 +169,7 @@ export default function Signup({setCurrentUser}) {
 						</Button> */}
 					</Stack>
 				</Stack>
+				{/* {errors ? <div>{errors}</div> : null} */}
 			</Paper>
 		</Box>
 	);

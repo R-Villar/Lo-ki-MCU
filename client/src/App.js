@@ -8,41 +8,27 @@ import NavBar from './components/NavBar';
 import ComicPageForm from './components/ComicPageForm';
 import DiscussionsPage from './components/discussions/DiscussionsPage';
 import ComicDiscussion from './components/discussions/ComicDiscussion';
+import {useHistory} from "react-router-dom";
+
 
 function App() {
 	const [apiComicData, SetApiComicData] = useState([]);
 	const [currentUser, setCurrentUser] = useState('');
+	const [ change, setChange ] =useState(false)
 	const [errors, setErrors] = useState([])
 	const [selectedComic, setSelectedComic] = useState({});
 	const [ dbComicData, setDbComicData ] = useState([])
 	const [userPost, setUserPost ] = useState([])
-	// const [ showDiscussionComic, setShowDiscussionComic ] = useState([{}])
-	const [ change, setChange ] =useState(false)
 	const [ search, setSearch ] = useState('thor')
+	const history = useHistory();
 
-	
+	console.log(errors)
 	// search api
 	useEffect(() => {
 		fetch(`/api-search/${search}`)
 			.then((res) => res.json())
 			.then((data) => SetApiComicData(data));
 	}, [search]);
-
-	// fetch user data
-	useEffect(() => {
-		fetch("/me").then((res) => {
-			if (res.ok) {
-				res.json().then((user) => {
-					setCurrentUser(user);
-				});
-			}else {res.json().then((json) => setErrors(json.errors))}
-		});
-	}, []);
-
-	// adds comic to discussions page.
-	const updateDbComics = (addedComic) => {
-		setDbComicData([...dbComicData, addedComic])
-	}
 
 	// fetch data from DB
 	useEffect(() => {
@@ -56,16 +42,43 @@ function App() {
 			})
 	}, [change]);
 
+	// fetch user data
+	useEffect(() => {
+		fetch("/me").then((res) => {
+			if (res.ok) {
+				res.json().then((user) => {
+					setCurrentUser(user);
+				});
+			}else {res.json().then((json) => setErrors(json.errors))}
+		});
+	}, []);
 
-	 // new posts
-	 const newPosts = (newPost) => {
+	// prevents unregistered users from using routes
+	useEffect(() => {
+		if (!currentUser) {
+			fetch('/me')
+			.then(res => {
+				if (!res.ok){
+					history.push('/login');
+				}
+			})
+		}
+	}, [currentUser])
+
+	// adds comic to discussions page.
+	const updateDbComics = (addedComic) => {
+		setDbComicData([...dbComicData, addedComic])
+	}
+
+	// new posts
+	const newPosts = (newPost) => {
         setUserPost([...userPost, newPost])
     }
 
 	// remove post
     const deletePosts = (postToDelete) => {
         const updatedPosts = userPost.filter((post) => post.id !== postToDelete.id)
-        setUserPost(updatedPosts)
+		setUserPost(updatedPosts)
     }
 
 	// update post
@@ -82,8 +95,9 @@ function App() {
 			<div>
 				{currentUser? <h4>Welcome, {currentUser.username}</h4> : null}
 			</div>
+			{/* {errors ? <div>{errors}</div> : null} */}
 			<Switch>
-				<Route exact path='/'>
+				<Route exact path='/home'>
 					<Home
 						setSelectedComic={setSelectedComic}
 						apiComicData={apiComicData}
@@ -104,7 +118,7 @@ function App() {
 						selectedComic={selectedComic}
 					/>
 				</Route>
-				<Route path='/discussions'>
+				<Route path='/Discussions'>
 					<DiscussionsPage
 						dbComicData={dbComicData}
 					/>
