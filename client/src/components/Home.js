@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom"
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import SearchBar from "./SearchBar";
+import { Link as RouterLink } from 'react-router-dom';
 
 const image_size = "portrait_uncanny";
 export default function Home({apiComicData, setSelectedComic, setSearch}) {
@@ -26,23 +25,18 @@ export default function Home({apiComicData, setSelectedComic, setSearch}) {
 					<Typography variant="h6" >{comic.title}</Typography>
 					<CardMedia 
 						component="img"
-						// height="400"
-						// width='450'
 						image={`${comic.thumbnail.path}/${image_size}.${comic.thumbnail.extension}`}
-						alt='comic' />
+						alt='comic' 
+					/>
 					
 						<Typography>{comic.format}</Typography>
 						<Typography>{comic.issueNumber}</Typography>
-						<Link
+						<Button  variant="contained"
 							to='/comic-page' 
+							component={RouterLink}
 							onClick={onComicClick}>
 							Start or Join Conversation
-						</Link>
-						{/* <Button  variant="contained"
-							href='/comic-page' 
-							onClick={onComicClick}>
-							Start or Join Conversation
-						</Button> */}
+						</Button>
 					</CardContent>
 				</Card>
 			</Box>

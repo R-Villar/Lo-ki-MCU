@@ -54,12 +54,12 @@ export default function NavBar({setCurrentUser, currentUser}) {
 		<AppBar position='sticky'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<LocalLibraryIcon ontSize='large'
+					<LocalLibraryIcon 
 						sx={{display: {xs: "none", md: "flex"}, mr: 1}}
 					/>
 					<Typography
 							variant='h4'
-							wrap
+							noWrap
 							as={NavLink}
 							to='/home'
 							sx={{
@@ -142,7 +142,7 @@ export default function NavBar({setCurrentUser, currentUser}) {
 					</Typography>
 					<Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
 						{pages.map((page) => (
-							<Button>
+							<Button key={page}>
 								<Typography
 									as={NavLink}
 									to={`/${page}`}
@@ -210,7 +210,6 @@ export default function NavBar({setCurrentUser, currentUser}) {
 					</Box>
 				</Toolbar>
 			</Container>
-
 		</AppBar>
 	);
 }

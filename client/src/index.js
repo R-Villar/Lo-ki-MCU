@@ -4,11 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#c51162'
+    },
+    secondary: {
+      main: '#2196f3'
+    }
+  }
+})
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );
