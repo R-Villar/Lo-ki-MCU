@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CardActions from '@mui/material/CardActions';
 
 
-export default function EditPost({post, currentUser, setDisplayComic, deletePosts, updatePost, setUpdate, update }) {
+export default function EditPost({post, currentUser, deletePosts, updatePost }) {
 
     const [likes, setLikes ] = useState( post.like )
     const [isClicked, setIsClicked] = useState(false);

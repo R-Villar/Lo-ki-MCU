@@ -5,13 +5,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import SearchBar from "./SearchBar";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 import { Link as RouterLink } from 'react-router-dom';
 
 const image_size = "portrait_uncanny";
-export default function Home({apiComicData, setSelectedComic, setSearch}) {
+export default function Home({apiComicData, setSelectedComic, setSearch, pageCount, handlePageClick}) {
 
 	// displays comics from api
-	const displayComics = apiComicData.map((comic) => {
+	const displayComics = apiComicData?.map((comic) => {
 		// get comic data
 		function onComicClick() {
 			setSelectedComic(comic);
@@ -19,7 +21,7 @@ export default function Home({apiComicData, setSelectedComic, setSearch}) {
 
 		return (
 			<Box key={comic.id}>
-				<Card sx={{ width: 300,
+				<Card elevation={5} sx={{ width: 300,
 					height: 650, }}>
 					<CardContent>
 					<Typography variant="h6" >{comic.title}</Typography>
@@ -62,6 +64,15 @@ export default function Home({apiComicData, setSelectedComic, setSearch}) {
 			}}>
 				{displayComics}
 			</Box>
+			<Stack spacing={2}>
+				<Pagination 
+					sx={{p: 1, m: 1}}
+					size="large" 
+					onChange={handlePageClick}
+					count={pageCount}
+					color="secondary"
+				/>
+			</Stack>
 		</>
 	);
 }
