@@ -178,6 +178,7 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
                             Submit
                         </Button>
                     </Stack> 
+                    {errors ? <div>{errors}</div> : null}
                 </Box>
 
             <div>

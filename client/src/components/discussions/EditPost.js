@@ -30,33 +30,35 @@ export default function EditPost({post, currentUser, deletePosts, updatePost }) 
         }));
     }
 
-    // like button clicked
-    const handleLikeClick = () => {
+    const handleUpdateLikes = () => {
+
+        // update like state
         if (isClicked) {
             setLikes(likes - 1);
         } else {
             setLikes(likes + 1);
         }
         setIsClicked(!isClicked);
-    };
 
-    // const handleUpdateLikes = () => {
+        const likeObj = {
+            like: post.like + 1
+        }
 
-        // fetch(`/posts/${post.id}`,  {
-        //     method: "PATCH",
-        //     headers: {"Content-type": "application/json"},
-        //     body: JSON.stringify(likes)
-        // })
-        // .then((response) => {
-        //     if(response.ok){
-        //         response.json().then(updatedLikes => {
-        //             updatePost(updatedLikes)
-        //         }) 
-        //     }else {
-        //         response.json().then((json) => setErrors(json.errors))
-        //     }
-        // })
-    // }
+        fetch(`/posts/${post.id}`,  {
+            method: "PATCH",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify(likeObj)
+        })
+        .then((response) => {
+            if(response.ok){
+                response.json().then(updatedLikes => {
+                    updatePost(updatedLikes)
+                }) 
+            }else {
+                response.json().then((json) => setErrors(json.errors))
+            }
+        })
+    }
 
     // edit post 
     const openEdit = (e) => {
@@ -67,7 +69,6 @@ export default function EditPost({post, currentUser, deletePosts, updatePost }) 
     const saveEditComment = (e) => {
         e.preventDefault()
 
-        console.log(formData)
         fetch(`/posts/${post.id}`, {
 			method: "PATCH",
 			headers: {"Content-type": "application/json"},
@@ -101,6 +102,7 @@ export default function EditPost({post, currentUser, deletePosts, updatePost }) 
 
     return (
         <div>
+            {errors ? <div>{errors}</div> : null}
             {isEditing? (
                  <Card sx={{m: 1}}>
                     <Stack  sx={{m: 1}} direction="row" spacing={1}>
@@ -119,7 +121,7 @@ export default function EditPost({post, currentUser, deletePosts, updatePost }) 
                         <Tooltip TransitionComponent={Zoom} arrow title="Like">
                             <IconButton
                                 size="small"
-                                onClick={handleLikeClick}
+                                onClick={handleUpdateLikes}
                             >
                                 {likes} <FavoriteIcon />
                             </IconButton>

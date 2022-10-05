@@ -4,15 +4,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import Alert from '@mui/material/Alert';
-
-
 
 export default function Signup({setCurrentUser}) {
 	// const history = useHistory();
 	const [userFormData, setUserFormData] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [emailError, setEmailError] = useState(false);
+	console.log(errors)
 
 	// validating email
 	const isValidEmail = (email) => {
@@ -31,7 +29,6 @@ export default function Signup({setCurrentUser}) {
 			setEmailError(false)
 		}
 	};
-
 	
 	// adding avatars to users later on
 	// const handleAvatarChange = (e) => {
@@ -40,7 +37,6 @@ export default function Signup({setCurrentUser}) {
 	// 		avatar: e.target.files[0],
 	// 	}));
 	// }
-
 
 	const onSubmit = (e) => {
 		e.preventDefault();
@@ -64,7 +60,6 @@ export default function Signup({setCurrentUser}) {
 		}
 	};
 
-	console.log(userFormData);
 
 	return (
 		<Box
@@ -88,7 +83,6 @@ export default function Signup({setCurrentUser}) {
 						type='text'
 						label='Username'
 						name='username'
-						// value={formData.username}
 						onChange={handleChange}
 					/>
 					<TextField
@@ -99,10 +93,9 @@ export default function Signup({setCurrentUser}) {
 						label='email'
 						name='email'
 						error={emailError? true : false }
-						// value={formData.email}
+						helperText={emailError}
 						onChange={handleChange}
 					/>
-					{/* {emailError && <h5>{emailError}</h5>} */}
 					<TextField
 						id='margin-normal'
 						margin='normal'
@@ -110,7 +103,6 @@ export default function Signup({setCurrentUser}) {
 						label='password'
 						type='password'
 						name='password'
-						// value={formData.password}
 						onChange={handleChange}
 					/>
 					<TextField
@@ -169,7 +161,6 @@ export default function Signup({setCurrentUser}) {
 						</Button> */}
 					</Stack>
 				</Stack>
-				{/* {errors ? <div>{errors}</div> : null} */}
 			</Paper>
 		</Box>
 	);
