@@ -20,7 +20,6 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
     const [isLoading, setIsLoading] = useState(true);
     const [ displayComic, setDisplayComic ] = useState([])
     const [formData, setFormData] = useState({like: 0});
-    const [ update, setUpdate ] = useState(false)
     const [errors, setErrors] = useState([])
     const {title, thumbnail, format, number_of_posts} = displayComic
 
@@ -63,9 +62,7 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
         .then( res => {
 			if(res.ok){
 				res.json().then((comment) =>
-                    newPosts(comment),
-                    //  setUpdate(!update)
-                     )
+                    newPosts(comment))
 			}else {
 				res.json().then((json) => setErrors(json.errors))
 			}
@@ -86,9 +83,6 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
                     <EditPost
                         updatePost={updatePost}
                         deletePosts={deletePosts}
-                        setUpdate={setUpdate}
-                        update={update}
-                        setDisplayComic={setDisplayComic}
                         currentUser={currentUser}
                         post={post}
                     />

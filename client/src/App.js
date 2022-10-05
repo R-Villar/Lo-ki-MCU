@@ -65,16 +65,43 @@ function App(props) {
 	const [selectedComic, setSelectedComic] = useState({});
 	const [ dbComicData, setDbComicData ] = useState([])
 	const [userPost, setUserPost ] = useState([])
+	const [page, setPage] = useState(1);
 	const [ search, setSearch ] = useState('thor')
 	const history = useHistory();
 
+	// We start with an empty list of items.
+	const [currentItems, setCurrentItems] = useState(null);
+	const [pageCount, setPageCount] = useState(0);
+	// Here we use item offsets; we could also use page offsets
+	// following the API or data you're working with.
+	const [itemOffset, setItemOffset] = useState(0);
+
+	const itemsPerPage = 25
 
 	// search api
 	useEffect(() => {
 		fetch(`/api-search/${search}`)
 			.then((res) => res.json())
-			.then((data) => SetApiComicData(data));
+			.then((data) => {
+				SetApiComicData(data)
+			})
 	}, [search]);
+
+
+	useEffect(() => {
+		const endOffset = itemOffset + itemsPerPage;
+		setCurrentItems(apiComicData.slice(itemOffset, endOffset));
+		setPageCount(Math.ceil(apiComicData.length / itemsPerPage));
+	}, [apiComicData, itemOffset ])
+
+
+	// Invoke when user click to request another page.
+	const handlePageClick = (e) => {
+		const newOffset = (page * itemsPerPage) % apiComicData.length;
+		setPage(e.currentTarget.textContent)
+		setItemOffset(newOffset);
+	};
+
 
 	// fetch data from DB
 	useEffect(() => {
@@ -147,9 +174,11 @@ function App(props) {
 			<Switch>
 				<Route exact path='/home'>
 					<Home
+						handlePageClick={handlePageClick}
+						pageCount={pageCount}
 						setSearch={setSearch}
 						setSelectedComic={setSelectedComic}
-						apiComicData={apiComicData}
+						apiComicData={currentItems}
 					/>
 				</Route>
 				<Route path='/signup'>

@@ -11,9 +11,10 @@ import TextField from "@mui/material/TextField";
 import Zoom from '@mui/material/Zoom';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import CardActions from '@mui/material/CardActions';
 
 
-export default function EditPost({post, currentUser, setDisplayComic, deletePosts, updatePost, setUpdate, update }) {
+export default function EditPost({post, currentUser, deletePosts, updatePost }) {
 
     const [likes, setLikes ] = useState( post.like )
     const [isClicked, setIsClicked] = useState(false);
@@ -114,32 +115,34 @@ export default function EditPost({post, currentUser, setDisplayComic, deletePost
                         </Typography>
                     </Stack>
                     <Typography>{post.comment}</Typography>
-                    <Tooltip TransitionComponent={Zoom} arrow title="Like">
-                        <IconButton
-                            size="small"
-                            onClick={handleLikeClick}
-                        >
-                            {likes} <FavoriteIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip TransitionComponent={Zoom} arrow title="Edit">
-                        <IconButton
-                            size="small" 
-                            disabled={disableButton}
-                            onClick={openEdit}
-                        > 
-                        <EditIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip TransitionComponent={Zoom} arrow title="Delete">
-                        <IconButton 
-                            size="small"
-                            disabled={disableButton}
-                            onClick={deleteComment}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <CardActions sx={{ justifyContent: 'center' }}  disableSpacing>
+                        <Tooltip TransitionComponent={Zoom} arrow title="Like">
+                            <IconButton
+                                size="small"
+                                onClick={handleLikeClick}
+                            >
+                                {likes} <FavoriteIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip TransitionComponent={Zoom} arrow title="Edit">
+                            <IconButton
+                                size="small" 
+                                disabled={disableButton}
+                                onClick={openEdit}
+                            > 
+                            <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip TransitionComponent={Zoom} arrow title="Delete">
+                            <IconButton 
+                                size="small"
+                                disabled={disableButton}
+                                onClick={deleteComment}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </CardActions>
                 </Card>
             ):(
                 <Card sx={{m: 1}}>

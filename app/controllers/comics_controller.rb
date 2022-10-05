@@ -6,15 +6,6 @@ class ComicsController < ApplicationController
         render json: Comic.all, status: :ok
     end
 
-    #GET '/comics/' 
-    # def api_comics
-    #     r = RestClient.get(fetch_url)
-    #     json = JSON.parse(r.body)
-    #     render json: json['data']['results']
-    #     # json['data']['results'].map { |comic| comic['title']}
-    # end
-
-
     def api_comics_search
         ts = DateTime.now.strftime('%Q')
         baseUrl = 'https://gateway.marvel.com/v1/public/comics'
@@ -22,7 +13,7 @@ class ComicsController < ApplicationController
         apiPrivateKey = ENV['MARVEL_PRIVATE_KEY']
         newString = ts + apiPrivateKey + apiPublicKey
         hash = Digest::MD5.hexdigest(newString)
-        url = "#{baseUrl}?ts=#{ts}&apikey=#{apiPublicKey}&hash=#{hash}&titleStartsWith=#{params[:value]}" #&titleStartsWith=#{params[:value]}"
+        url = "#{baseUrl}?ts=#{ts}&apikey=#{apiPublicKey}&hash=#{hash}&titleStartsWith=#{params[:value]}&limit=100"
         r = RestClient.get(url)
         json = JSON.parse(r.body)
         render json: json['data']['results']
