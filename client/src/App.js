@@ -16,7 +16,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PropTypes from 'prop-types';
 import Toolbar from '@mui/material/Toolbar';
 import Zoom from '@mui/material/Zoom';
-
+import { Typography } from '@mui/material';
 
 // scroll to the top of the page.
 function ScrollTop(props) {
@@ -115,6 +115,7 @@ function App(props) {
 			})
 	}, [change]);
 
+
 	// fetch user data
 	useEffect(() => {
 		fetch("/me").then((res) => {
@@ -125,7 +126,7 @@ function App(props) {
 			}else {res.json().then((json) => setErrors(json.errors))}
 		});
 	}, []);
-
+	console.log(errors)
 	// prevents unregistered users from using routes
 	useEffect(() => {
 		if (!currentUser) {
@@ -136,7 +137,7 @@ function App(props) {
 				}
 			})
 		}
-	}, [])
+	}, [currentUser, history ])
 
 	// adds comic to discussions page.
 	const updateDbComics = (addedComic) => {
@@ -166,11 +167,10 @@ function App(props) {
 		<div className='App'>
 			<NavBar currentUser={currentUser} 
 				setCurrentUser={setCurrentUser}/>
-			<div>
-				{currentUser? <h4>Welcome, {currentUser.username}</h4> : null}
+			{/* <div> */}
+				{currentUser? <Typography> Welcome, {currentUser.username}</Typography> : null}
 				<Toolbar id="back-to-top-anchor" />
-			</div>
-			{/* {errors ? <div>{errors}</div> : null} */}
+			{/* </div> */}
 			<Switch>
 				<Route exact path='/home'>
 					<Home
