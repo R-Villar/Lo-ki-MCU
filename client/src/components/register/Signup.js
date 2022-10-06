@@ -4,9 +4,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
+import {useHistory} from "react-router-dom";
 
 export default function Signup({setCurrentUser}) {
-	// const history = useHistory();
+	const history = useHistory();
 	const [userFormData, setUserFormData] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [emailError, setEmailError] = useState(false);
@@ -52,6 +53,7 @@ export default function Signup({setCurrentUser}) {
 				if(res.ok){
 					res.json().then(user => {
 						setCurrentUser(user);
+						history.push('/home');
 					})
 				}else {
 					res.json().then((json) => setErrors(json.errors))

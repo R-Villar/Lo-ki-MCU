@@ -67,6 +67,7 @@ export default function ComicDiscussion({ currentUser, setUserPost, newPosts, us
 				res.json().then((json) => setErrors(json.errors))
 			}
 		})
+        e.target.reset()
 	};
 
 
