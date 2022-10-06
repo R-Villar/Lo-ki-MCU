@@ -8,23 +8,23 @@
 require 'faker'
 
 
-User.destroy_all
-Post.destroy_all
+# User.destroy_all
+# Post.destroy_all
 # Comic.destroy_all
 
 puts "creating seeds"
 
-# 5.times do User.create(
+# 20.times do User.create(
 #     username: Faker::Name.unique.name,
 #     email: Faker::Internet.email,
 #     password: '12345')
 # end
 
-5.times do Post.create(
+25.times do Post.create(
     comment: Faker::Lorem.sentence,
     like: 5,
-    user_id: rand(1),
-    comic_id: 1
+    user_id: rand(1..50),
+    comic_id: rand(1..10)
 )
 end
 
