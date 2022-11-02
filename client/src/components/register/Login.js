@@ -38,6 +38,11 @@ export default function Login({setCurrentUser}) {
 		})
 	}
 
+	// cancel button sends user back to the home page
+	const handleCancel = () => {
+		history.push('/home')
+	}
+
 	console.log(errors)
 	return (
 		<Box
@@ -79,7 +84,7 @@ export default function Login({setCurrentUser}) {
 						spacing={2}
 					>
 						<Button
-							// onClick={handleCancel}
+							onClick={handleCancel}
 							color='secondary'
 							size='small'
 							variant='contained'
