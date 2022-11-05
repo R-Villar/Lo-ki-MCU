@@ -106,7 +106,7 @@ export default function EditPost({post, currentUser, deletePosts, updatePost }) 
             {isEditing? (
                  <Card sx={{m: 1}}>
                     <Stack  sx={{m: 1}} direction="row" spacing={1}>
-                        <Avatar>{post.user.username[0]}</Avatar>
+                        <Avatar src={ currentUser ? (post.user.avatar_url) : ('/static/images/avatar/2.jpg')} />
                         <Typography 
                             variant="button"
                             display="block"
