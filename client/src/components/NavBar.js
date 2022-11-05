@@ -170,7 +170,7 @@ export default function NavBar({setCurrentUser, currentUser}) {
 								{/* Avatar for User */}
 								<Avatar
 									alt=''
-									src={ currentUser ? (currentUser.icon) : ('/static/images/avatar/2.jpg')}
+									src={ currentUser ? (currentUser.avatar_url) : ('/static/images/avatar/2.jpg')}
 								/>
 							</IconButton>
 						</Tooltip>

@@ -8,9 +8,15 @@ import {useHistory} from "react-router-dom";
 
 export default function Signup({setCurrentUser}) {
 	const history = useHistory();
+	// remove userFormData after fixing email validation
 	const [userFormData, setUserFormData] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [emailError, setEmailError] = useState(false);
+	const [avatar, setAvatar] = useState(null)
+	const [userName, setUserName] = useState('')
+	const [passWord, setPassWord] = useState('')
+	const [passWordConfirmation, setPassWordConfirmation] = useState('')
+	const [email, setEmail] = useState('')
 	console.log(errors)
 
 	// validating email
@@ -18,6 +24,7 @@ export default function Signup({setCurrentUser}) {
 		return /\S+@\S+\.\S+/.test(email);
 	}
 
+	// fix email validation
 	// form data from user input 
 	const handleChange = (e) => {
 		setUserFormData((formData) => ({
@@ -35,19 +42,25 @@ export default function Signup({setCurrentUser}) {
 	// const handleAvatarChange = (e) => {
 	//     setUserFormData((formData) => ({
 	// 		...formData,
-	// 		avatar: e.target.files[0],
+	// 		[e.target.name]: e.target.files[0],
 	// 	}));
 	// }
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		if(userFormData.password !== userFormData.passwordConfirmation){
+		const formData = new FormData()
+		formData.append('avatar', avatar)
+		formData.append('username', userName)
+		formData.append('password', passWord)
+		formData.append('email', email)
+
+
+		if(passWord !== passWordConfirmation){
 			alert("passwords don't match")
 		}else {
 			fetch("/users", {
 				method: "POST",
-				headers: {"Content-Type": "application/json"},
-				body: JSON.stringify(userFormData),
+				body: formData,
 			})
 			.then( res => {
 				if(res.ok){
@@ -78,7 +91,7 @@ export default function Signup({setCurrentUser}) {
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
-				"& > :not(style)": {m: 5, p: 4, width: 300, height: 400},
+				"& > :not(style)": {m: 5, p: 4, width: 500, height: 400},
 			}}
 		>
 			<Paper sx={{p: 2, m: 4}}>
@@ -90,7 +103,7 @@ export default function Signup({setCurrentUser}) {
 						type='text'
 						label='Username'
 						name='username'
-						onChange={handleChange}
+						onChange={(e) => setUserName(e.target.value)}
 					/>
 					<TextField
 						id='margin-normal'
@@ -101,7 +114,7 @@ export default function Signup({setCurrentUser}) {
 						name='email'
 						error={emailError? true : false }
 						helperText={emailError}
-						onChange={handleChange}
+						onChange={(e) => setEmail(e.target.value)}
 					/>
 					<TextField
 						id='margin-normal'
@@ -110,7 +123,7 @@ export default function Signup({setCurrentUser}) {
 						label='password'
 						type='password'
 						name='password'
-						onChange={handleChange}
+						onChange={(e) => setPassWord(e.target.value)}
 					/>
 					<TextField
                     id='margin-normal'
@@ -119,7 +132,7 @@ export default function Signup({setCurrentUser}) {
                     type='password'
                     label='Confirm Password'
                     name='passwordConfirmation'
-                    onChange={handleChange}
+                    onChange={(e) => setPassWordConfirmation(e.target.value)}
                 />
 					{/* <TextField
 						id='margin-normal'
@@ -156,16 +169,16 @@ export default function Signup({setCurrentUser}) {
 							Sign Up
 						</Button>
 						{/* uploading avatar for users */}
-						{/* <Button variant='contained' component='label'>
+						<Button variant='contained' component='label'>
 							Upload
 							<input
-								onChange={handleAvatarChange}
+								onChange={(e) => setAvatar(e.target.files[0])}
 								// value={formData.avatar}
 								name='avatar'
 								accept='image/*'
 								type='file'
 							/>
-						</Button> */}
+						</Button>
 					</Stack>
 				</Stack>
 			</Paper>
