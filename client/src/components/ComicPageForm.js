@@ -1,4 +1,4 @@
-import { useState} from "react";
+import {useState} from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -10,15 +10,20 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useHistory} from "react-router-dom";
 
-
 const image_size = "portrait_uncanny";
-export default function ComicPageForm({ change, setChange, selectedComic, currentUser, updateDbComics}) {
-	const [errors, setErrors] = useState([])
+export default function ComicPageForm({
+	change,
+	setChange,
+	selectedComic,
+	currentUser,
+	updateDbComics,
+}) {
+	const [errors, setErrors] = useState([]);
 	const history = useHistory();
 	// comment form
-	const [formData, setFormData] = useState({ like: 0 });
+	const [formData, setFormData] = useState({like: 0});
 	// disable send comment if user is not logged in
-	const disableCommentButton  = !currentUser
+	const disableCommentButton = !currentUser;
 
 	const userInput = (e) => {
 		setFormData((formData) => ({
@@ -46,19 +51,18 @@ export default function ComicPageForm({ change, setChange, selectedComic, curren
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify(infoToSend),
-		})
-        .then( res => {
-			if(res.ok){
-				res.json().then(post => 
-					updateDbComics(post),
+		}).then((res) => {
+			if (res.ok) {
+				res.json().then(
+					(post) => updateDbComics(post),
 					setChange(!change),
-					history.push('/Discussions')
-					)
-			}else {
-				res.json().then((json) => setErrors(json.errors))
+					history.push("/Discussions")
+				);
+			} else {
+				res.json().then((json) => setErrors(json.errors));
 			}
-		})
-		console.log(errors)
+		});
+		console.log(errors);
 	};
 
 	return (

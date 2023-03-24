@@ -1,5 +1,5 @@
-import { NavLink, useHistory } from "react-router-dom"
-import { useState } from 'react'
+import {NavLink, useHistory} from "react-router-dom";
+import {useState} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,19 +12,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-
-
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 
 export default function NavBar({setCurrentUser, currentUser}) {
 	const history = useHistory();
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
-	const pages = currentUser ? ["home", "Discussions"] : ["home"] 
+	const pages = currentUser ? ["home", "Discussions"] : ["home"];
 
-	const settings = currentUser
-	? ["SignOut"]
-	: ["SignUp", "LogIn"]; 
+	const settings = currentUser ? ["SignOut"] : ["SignUp", "LogIn"];
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
@@ -44,8 +40,8 @@ export default function NavBar({setCurrentUser, currentUser}) {
 	const handleLogout = () => {
 		fetch("/logout", {method: "DELETE"}).then((res) => {
 			if (res.ok) {
-				setCurrentUser('');
-				history.push('/home');
+				setCurrentUser("");
+				history.push("/home");
 			}
 		});
 	};
@@ -54,25 +50,25 @@ export default function NavBar({setCurrentUser, currentUser}) {
 		<AppBar position='sticky'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<LocalLibraryIcon 
+					<LocalLibraryIcon
 						sx={{display: {xs: "none", md: "flex"}, mr: 1}}
 					/>
 					<Typography
-							variant='h4'
-							noWrap
-							as={NavLink}
-							to='/home'
-							sx={{
-								mr: 2,
-								display: {xs: "none", md: "flex"},
-								fontFamily: "monospace",
-								fontWeight: 700,
-								letterSpacing: ".3rem",
-								color: "inherit",
-								textDecoration: "none",
-							}}
+						variant='h4'
+						noWrap
+						as={NavLink}
+						to='/home'
+						sx={{
+							mr: 2,
+							display: {xs: "none", md: "flex"},
+							fontFamily: "monospace",
+							fontWeight: 700,
+							letterSpacing: ".3rem",
+							color: "inherit",
+							textDecoration: "none",
+						}}
 					>
-							Lo-ki MCU
+						Lo-ki MCU
 					</Typography>
 					{/* Menu for mobile screens */}
 					<Box sx={{flexGrow: 1, display: {xs: "flex", md: "none"}}}>
@@ -152,7 +148,7 @@ export default function NavBar({setCurrentUser, currentUser}) {
 										my: 2,
 										color: "white",
 										display: "block",
-										textDecoration: "none"
+										textDecoration: "none",
 									}}
 								>
 									{page}
@@ -170,7 +166,11 @@ export default function NavBar({setCurrentUser, currentUser}) {
 								{/* Avatar for User */}
 								<Avatar
 									alt=''
-									src={ currentUser ? (currentUser.avatar_url) : ('/static/images/avatar/2.jpg')}
+									src={
+										currentUser
+											? currentUser.avatar_url
+											: "/static/images/avatar/2.jpg"
+									}
 								/>
 							</IconButton>
 						</Tooltip>
@@ -195,15 +195,15 @@ export default function NavBar({setCurrentUser, currentUser}) {
 									key={setting}
 									onClick={handleCloseUserMenu}
 								>
-										<Typography
-											onClick={handleLogout}
-											as={NavLink}
-											to={`/${setting}`}
-											textAlign='center'
-											sx={{textDecoration: "none"}}
-										>
-											{setting}
-										</Typography>
+									<Typography
+										onClick={handleLogout}
+										as={NavLink}
+										to={`/${setting}`}
+										textAlign='center'
+										sx={{textDecoration: "none"}}
+									>
+										{setting}
+									</Typography>
 								</MenuItem>
 							))}
 						</Menu>
